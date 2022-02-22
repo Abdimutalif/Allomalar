@@ -1,29 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:padding="10dp">
-    <androidx.cardview.widget.CardView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <com.google.android.material.card.MaterialCardView
         android:id="@+id/card_madrasa_name"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="94dp"
+        android:clickable="true"
+        app:cardBackgroundColor="#FFCC7F"
         app:cardCornerRadius="10dp"
         app:cardElevation="10dp"
-        app:cardBackgroundColor="#FBCE5B"
         app:cardMaxElevation="12dp"
-        android:clickable="true"
         app:cardPreventCornerOverlap="true"
-        app:cardUseCompatPadding="true"
-        >
+        app:cardUseCompatPadding="true">
+
         <TextView
-            android:layout_gravity="center"
             android:id="@+id/tv_madrasa_name"
-            android:text="@string/app_name"
-            android:textSize="30sp"
-            android:textColor="@color/black"
-            android:fontFamily="@font/font"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-    </androidx.cardview.widget.CardView>
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:fontFamily="@font/font"
+            android:text="@string/app_name"
+            android:textColor="@color/black"
+            android:textSize="30sp" />
+    </com.google.android.material.card.MaterialCardView>
 </LinearLayout>

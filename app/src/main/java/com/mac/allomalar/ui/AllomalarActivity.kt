@@ -18,6 +18,7 @@ class AllomalarActivity : AppCompatActivity() {
         binding = ActivityAllomalarBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setBottomNavGraph()
+        supportActionBar?.hide()
     }
 
     private fun setBottomNavGraph() {
