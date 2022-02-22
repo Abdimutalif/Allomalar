@@ -1,4 +1,4 @@
-package com.mac.allomalar.ui
+package com.mac.allomalar.ui.fragments
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

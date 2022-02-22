@@ -1,8 +1,9 @@
-package com.mac.allomalar
+package com.mac.allomalar.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.navigation.findNavController
+import com.mac.allomalar.R
 import com.mac.allomalar.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -24,7 +25,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.user -> {
                     controller.navigate(R.id.userFragment)
                 }
-                R.id.settings->{
+                R.id.settings ->{
                     controller.navigate(R.id.settingsFragment)
                 }
             }

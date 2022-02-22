@@ -11,8 +11,8 @@
         android:layout_height="65dp"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="20dp"
-        app:cardElevation="8dp"
-        app:cardCornerRadius="5dp">
+        app:cardCornerRadius="5dp"
+        app:cardElevation="8dp">
 
         <ImageView
             android:id="@+id/iv_image_of_information"
@@ -22,22 +22,24 @@
     </com.google.android.material.card.MaterialCardView>
 
     <ImageView
-        android:layout_marginTop="16dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:src="@drawable/image_info_top2"/>
+        android:layout_marginTop="16dp"
+        android:src="@drawable/image_info_top2" />
+
     <TextView
         android:id="@+id/tv_information"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@drawable/image_info_middle"
+        android:gravity="center"
         android:paddingHorizontal="16dp"
         android:text="@string/text"
-        android:gravity="center"
-        android:textSize="20dp"
-        android:background="@drawable/image_info_middle"/>
+        android:textSize="20dp" />
+
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:src="@drawable/image_info_bottom"
-        android:layout_marginBottom="16dp"/>
+        android:layout_marginBottom="16dp"
+        android:src="@drawable/image_info_bottom" />
 </androidx.appcompat.widget.LinearLayoutCompat>
