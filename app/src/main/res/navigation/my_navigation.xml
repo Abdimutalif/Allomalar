@@ -9,7 +9,7 @@
         android:id="@+id/homeFragment"
         android:name="com.mac.allomalar.ui.HomeFragment"
         android:label="fragment_home"
-        tools:layout="@layout/fragment_open" />
+        tools:layout="@layout/fragment_home" />
     <fragment
         android:id="@+id/mapFragment"
         android:name="com.mac.allomalar.ui.MapFragment"
@@ -22,7 +22,8 @@
         tools:layout="@layout/fragment_user" />
     <fragment
         android:id="@+id/settingsFragment"
-        android:name="com.mac.allomalar.ui.LeekFragment"
+        android:name="com.mac.allomalar.ui.SettingsFragment"
         android:label="fragment_settings"
         tools:layout="@layout/fragment_settings" />
+
 </navigation>
