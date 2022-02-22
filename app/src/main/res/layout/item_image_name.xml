@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="220dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardCornerRadius="20dp"
+    app:cardElevation="15dp"
+    app:cardMaxElevation="20dp"
+    app:strokeWidth="4dp"
+    app:cardBackgroundColor="#F8E9B4"
+    app:strokeColor="#2E1B1B">
+    <LinearLayout
+        android:padding="15dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <ImageView
+            android:id="@+id/image_Abu"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_gravity="center"
+            android:src="@drawable/ibn_sino_image"/>
+        <TextView
+            android:id="@+id/tv_Abu_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Abu Ali Ibn Sino"
+            android:textColor="@color/black"
+            android:textSize="25sp"
+            android:fontFamily="@font/font"
+            android:background="#9CF875"
+            android:layout_gravity="center"/>
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>
