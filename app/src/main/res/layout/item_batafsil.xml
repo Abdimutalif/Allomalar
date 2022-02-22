@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="10dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal">
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/card_creation_image"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        app:strokeColor="#452F2F"
+        app:strokeWidth="5dp"
+        app:cardBackgroundColor="#F3E6BA"
+        android:padding="10dp"
+        app:cardCornerRadius="100dp">
+
+        <ImageView
+            android:id="@+id/image_creation"
+            android:layout_gravity="center"
+            android:layout_width="65dp"
+            android:layout_height="65dp"
+            android:src="@drawable/ijod_yunalishi_image"/>
+    </com.google.android.material.card.MaterialCardView>
+   <TextView
+       android:layout_gravity="center"
+       android:id="@+id/tv_creation"
+       android:text="Ijod yo'nalishlari"
+       android:textSize="35dp"
+       android:fontFamily="@font/font"
+       android:textColor="@color/black"
+       android:layout_margin="15dp"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"/>
+
+</LinearLayout>
