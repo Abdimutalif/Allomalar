@@ -22,15 +22,15 @@
             android:layout_height="65dp"
             android:src="@drawable/ijod_yunalishi_image"/>
     </com.google.android.material.card.MaterialCardView>
-   <TextView
-       android:layout_gravity="center"
-       android:id="@+id/tv_creation"
-       android:text="Ijod yo'nalishlari"
-       android:textSize="35dp"
-       android:fontFamily="@font/font"
-       android:textColor="@color/black"
-       android:layout_margin="15dp"
-       android:layout_width="wrap_content"
-       android:layout_height="wrap_content"/>
+    <TextView
+        android:layout_gravity="center"
+        android:id="@+id/tv_creation"
+        android:text="Ijod yo'nalishlari"
+        android:textSize="35dp"
+        android:fontFamily="@font/font"
+        android:textColor="@color/black"
+        android:layout_margin="15dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
 
 </LinearLayout>
