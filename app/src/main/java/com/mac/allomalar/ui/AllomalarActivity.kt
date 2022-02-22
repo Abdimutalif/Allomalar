@@ -2,6 +2,7 @@ package com.mac.allomalar.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.navigation.Navigation
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
@@ -21,9 +22,11 @@ class AllomalarActivity : AppCompatActivity() {
         supportActionBar?.hide()
     }
 
+    override fun onSupportNavigateUp(): Boolean {
+        return Navigation.findNavController(this,R.id.fragmentContainerView).navigateUp()
+    }
     private fun setBottomNavGraph() {
        val bottomNav = findViewById<BottomNavigationView>(R.id.bottom_navigation_view)
-        val navController = findNavController(R.id.fragmentContainerView)
-        bottomNav.setupWithNavController(navController)
+
     }
 }

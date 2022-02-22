@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
+    android:padding="10dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     >
     <com.google.android.material.card.MaterialCardView
@@ -46,7 +47,7 @@
         app:cardMaxElevation="12dp"
         app:cardElevation="20dp"
         app:cardCornerRadius="30dp"
-        android:layout_margin="35dp"
+        android:layout_margin="20dp"
         app:cardBackgroundColor="#F89D05">
         <TextView
             android:layout_gravity="center"
