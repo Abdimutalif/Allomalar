@@ -2,28 +2,28 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/my_navigation"
-    app:startDestination="@id/homeFragment">
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/fr_home">
+
 
     <fragment
-        android:id="@+id/homeFragment"
-        android:name="com.mac.allomalar.ui.HomeFragment"
+        android:id="@+id/fr_home"
+        android:name="com.mac.allomalar.ui.fragments.HomeFragment"
         android:label="fragment_home"
         tools:layout="@layout/fragment_home" />
     <fragment
-        android:id="@+id/mapFragment"
-        android:name="com.mac.allomalar.ui.MapFragment"
+        android:id="@+id/fr_map"
+        android:name="com.mac.allomalar.ui.fragments.MapFragment"
         android:label="fragment_map"
         tools:layout="@layout/fragment_map" />
     <fragment
-        android:id="@+id/userFragment"
-        android:name="com.mac.allomalar.ui.UserFragment"
+        android:id="@+id/fr_user"
+        android:name="com.mac.allomalar.ui.fragments.UserFragment"
         android:label="fragment_user"
         tools:layout="@layout/fragment_user" />
     <fragment
-        android:id="@+id/settingsFragment"
-        android:name="com.mac.allomalar.ui.SettingsFragment"
+        android:id="@+id/fr_settings"
+        android:name="com.mac.allomalar.ui.fragments.SettingsFragment"
         android:label="fragment_settings"
         tools:layout="@layout/fragment_settings" />
-
 </navigation>
