@@ -18,15 +18,17 @@ class AllomalarActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityAllomalarBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        setBottomNavGraph()
         supportActionBar?.hide()
+        setBottomNavGraph()
+
     }
 
     override fun onSupportNavigateUp(): Boolean {
         return Navigation.findNavController(this,R.id.fragmentContainerView).navigateUp()
     }
     private fun setBottomNavGraph() {
-       val bottomNav = findViewById<BottomNavigationView>(R.id.bottom_navigation_view)
-
+        var navController = findNavController(R.id.fragmentContainerView)
+        val bottomNav = findViewById<BottomNavigationView>(R.id.bottom_navigation_view)
+        bottomNav.setupWithNavController(navController)
     }
 }

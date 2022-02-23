@@ -1,6 +1,7 @@
 package com.mac.allomalar.ui.fragments
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -11,25 +12,23 @@ import com.mac.allomalar.adapters.PagerAdapter
 import com.mac.allomalar.databinding.FragmentHomeBinding
 import com.mac.allomalar.databinding.FragmentPagerBinding
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
 class HomeFragment : Fragment() {
-    private var param1: String? = null
-    private var param2: String? = null
+    private  val TAG = "HomeFragment"
     private lateinit var binding: FragmentHomeBinding
     private lateinit var pagerAdapter: PagerAdapter
+    val list = ArrayList<PagerFragment>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+        Log.d(TAG, "onCreate: $this")
+
+        for (i in 0..7) {
+            val fragment = PagerFragment.getInstance(i)
+            Log.d(TAG, "fragment[$i] -> $fragment")
+            list.add(fragment)
         }
     }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -38,15 +37,24 @@ class HomeFragment : Fragment() {
         return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        Log.d(TAG, "onViewCreated: $this")
+        setAdapter("onViewCreated")
+    }
     override fun onResume() {
         super.onResume()
-        setAdapter()
+        Log.d(TAG, "onResume: $this")
+        setAdapter("onResume")
     }
 
-    private fun setAdapter() {
-        var tab = binding.dotsIndicator
-        var viewPager = binding.vp
+    private fun setAdapter(s: String) {
+        Log.d(TAG, "setAdapter: $s")
+        val tab = binding.dotsIndicator
+        val viewPager = binding.vp
         pagerAdapter = PagerAdapter(
+            list,
+            list.size,
             activity?.supportFragmentManager!!,
             FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT
         )
@@ -55,14 +63,4 @@ class HomeFragment : Fragment() {
         tab.setViewPager(viewPager)
     }
 
-    companion object {
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            HomeFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
-    }
 }

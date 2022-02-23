@@ -7,14 +7,15 @@
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/card_madrasa_name"
         android:layout_width="match_parent"
-        android:layout_height="94dp"
+        android:layout_height="51dp"
         android:clickable="true"
         app:cardBackgroundColor="#FFCC7F"
         app:cardCornerRadius="10dp"
-        app:cardElevation="10dp"
-        app:cardMaxElevation="12dp"
+        app:cardElevation="5dp"
+        app:cardMaxElevation="10dp"
+        android:layout_marginHorizontal="28dp"
         app:cardPreventCornerOverlap="true"
-        app:cardUseCompatPadding="true">
+        android:layout_marginVertical="10dp">
 
         <TextView
             android:id="@+id/tv_madrasa_name"
