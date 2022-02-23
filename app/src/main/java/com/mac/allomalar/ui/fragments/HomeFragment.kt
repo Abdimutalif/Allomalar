@@ -12,9 +12,8 @@ import com.mac.allomalar.adapters.PagerAdapter
 import com.mac.allomalar.databinding.FragmentHomeBinding
 import com.mac.allomalar.databinding.FragmentPagerBinding
 
-
 class HomeFragment : Fragment() {
-    private  val TAG = "HomeFragment"
+    private val TAG = "HomeFragment"
     private lateinit var binding: FragmentHomeBinding
     private lateinit var pagerAdapter: PagerAdapter
     val list = ArrayList<PagerFragment>()
@@ -29,6 +28,7 @@ class HomeFragment : Fragment() {
             list.add(fragment)
         }
     }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -42,10 +42,17 @@ class HomeFragment : Fragment() {
         Log.d(TAG, "onViewCreated: $this")
         setAdapter("onViewCreated")
     }
+
     override fun onResume() {
         super.onResume()
         Log.d(TAG, "onResume: $this")
-        setAdapter("onResume")
+    //    setAdapter("onResume")
+        pagerAdapter.notifyDataSetChanged()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        Log.d(TAG, "onPause: $this")
     }
 
     private fun setAdapter(s: String) {

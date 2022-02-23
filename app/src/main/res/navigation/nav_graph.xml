@@ -10,7 +10,11 @@
         android:id="@+id/fr_home"
         android:name="com.mac.allomalar.ui.fragments.HomeFragment"
         android:label="fragment_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_fr_home_to_madrasaFragment"
+            app:destination="@id/madrasaFragment" />
+    </fragment>
     <fragment
         android:id="@+id/fr_map"
         android:name="com.mac.allomalar.ui.fragments.MapFragment"
@@ -27,8 +31,8 @@
         android:label="fragment_settings"
         tools:layout="@layout/fragment_settings" />
     <fragment
-        android:id="@+id/fieldInformationFragment"
-        android:name="com.mac.allomalar.ui.fragments.FieldInformationFragment"
-        android:label="fragment_field_information"
-        tools:layout="@layout/fragment_field_information" />
+        android:id="@+id/madrasaFragment"
+        android:name="com.mac.allomalar.ui.fragments.MadrasaFragment"
+        android:label="fragment_madrasa_2"
+        tools:layout="@layout/fragment_madrasa_2" />
 </navigation>
