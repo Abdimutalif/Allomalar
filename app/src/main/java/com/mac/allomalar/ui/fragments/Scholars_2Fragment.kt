@@ -5,20 +5,20 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
 import com.mac.allomalar.R
+import com.mac.allomalar.adapters.FieldsAdapter
+import com.mac.allomalar.databinding.FragmentMadrasa2Binding
+import com.mac.allomalar.databinding.FragmentScholars2Binding
 
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [Scholars_2Fragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class Scholars_2Fragment : Fragment() {
-    // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
+    private lateinit var fieldsAdapter: FieldsAdapter
+    private lateinit var binding: FragmentScholars2Binding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,20 +32,21 @@ class Scholars_2Fragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_scholars_2, container, false)
+        binding = FragmentScholars2Binding.inflate(layoutInflater)
+        setAdapter()
+        return binding.root
+    }
+
+    private fun setAdapter() {
+        fieldsAdapter = FieldsAdapter(listOf("", "", "", "", "", "", ""), object : FieldsAdapter.OnFieldClick{
+            override fun onClick(field: Any, position: Int) {
+                findNavController().navigate(R.id.action_scholars_2Fragment_to_fieldInformationFragment)
+            }
+        })
+        binding.rv.adapter = fieldsAdapter
     }
 
     companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment Scholars_2Fragment.
-         */
-        // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
             Scholars_2Fragment().apply {

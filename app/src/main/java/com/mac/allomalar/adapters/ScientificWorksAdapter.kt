@@ -8,18 +8,16 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.card.MaterialCardView
 import com.mac.allomalar.R
 
-class FieldsAdapter(var list: List<Any>, var onFieldClick: OnFieldClick) : RecyclerView.Adapter<FieldsAdapter.ViewHolder>() {
+class ScientificWorksAdapter(var list: List<Any>) : RecyclerView.Adapter<ScientificWorksAdapter.ViewHolder>() {
 
     inner class ViewHolder(var view: View) : RecyclerView.ViewHolder(view) {
         fun onBind(item: Any?, position: Int ){
-           view.setOnClickListener {
-               onFieldClick.onClick("", position)
-           }
+
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_fields, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_literature, parent, false)
         return ViewHolder(view)
     }
 
@@ -29,7 +27,4 @@ class FieldsAdapter(var list: List<Any>, var onFieldClick: OnFieldClick) : Recyc
 
     override fun getItemCount(): Int = list.size
 
-    interface OnFieldClick{
-        fun onClick(field: Any, position: Int)
-    }
 }

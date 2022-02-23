@@ -46,7 +46,7 @@ class HomeFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         Log.d(TAG, "onResume: $this")
-    //    setAdapter("onResume")
+        //    setAdapter("onResume")
         pagerAdapter.notifyDataSetChanged()
     }
 
@@ -62,7 +62,7 @@ class HomeFragment : Fragment() {
         pagerAdapter = PagerAdapter(
             list,
             list.size,
-            activity?.supportFragmentManager!!,
+            childFragmentManager,
             FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT
         )
         viewPager.adapter = pagerAdapter

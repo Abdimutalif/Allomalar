@@ -6,6 +6,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.navigation.fragment.findNavController
+import com.mac.allomalar.R
 import com.mac.allomalar.adapters.ScholarsAdapter
 import com.mac.allomalar.databinding.FragmentMadrasa2Binding
 
@@ -37,9 +39,10 @@ class MadrasaFragment : Fragment() {
     }
 
     private fun setAdapter() {
-        adapter = ScholarsAdapter(object : ScholarsAdapter.OnItemScholarClick{
+        adapter = ScholarsAdapter(object : ScholarsAdapter.OnItemScholarClick {
             override fun onClick(scholar: Any?, position: Int) {
                 Toast.makeText(requireContext(), "Scholars", Toast.LENGTH_SHORT).show()
+                findNavController().navigate(R.id.action_madrasaFragment_to_scholar_1Fragment)
             }
 
         })
