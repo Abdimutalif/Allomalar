@@ -73,7 +73,7 @@ class Scholar_1Fragment : Fragment() {
 
     private fun navigate3(){
         Toast.makeText(requireContext(), "Not Yet Implemented", Toast.LENGTH_SHORT).show()
-        //findNavController().navigate(R.id.action_scholar_1Fragment_to_scholars_2Fragment)
+        findNavController().navigate(R.id.action_scholar_1Fragment_to_worldFondFragment)
     }
 
     companion object {

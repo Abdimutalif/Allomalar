@@ -10,6 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Allomalar">
         <activity
+            android:theme="@style/Theme.Allomalar.NoActionBar"
             android:name=".ui.AllomalarActivity"
             android:exported="true" >
             <intent-filter>
