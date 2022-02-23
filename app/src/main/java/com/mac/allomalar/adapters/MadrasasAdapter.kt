@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.mac.allomalar.R
 
-class ScholarsAdapter(var number: Int) : RecyclerView.Adapter<ScholarsAdapter.ViewHolder>() {
+class MadrasasAdapter(var number: Int) : RecyclerView.Adapter<MadrasasAdapter.ViewHolder>() {
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 

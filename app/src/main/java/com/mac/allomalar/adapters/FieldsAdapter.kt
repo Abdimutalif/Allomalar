@@ -1,16 +1,18 @@
 package com.mac.allomalar.adapters
 
+import android.provider.CalendarContract
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.card.MaterialCardView
 import com.mac.allomalar.R
 
 class FieldsAdapter(var list: List<Any>) : RecyclerView.Adapter<FieldsAdapter.ViewHolder>() {
 
-    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    inner class ViewHolder(var view: View) : RecyclerView.ViewHolder(view) {
         fun onBind(item: Any?, position: Int ){
-
+            var card = view.findViewById<MaterialCardView>(R.id.card_root_name_madrasa)
         }
     }
 

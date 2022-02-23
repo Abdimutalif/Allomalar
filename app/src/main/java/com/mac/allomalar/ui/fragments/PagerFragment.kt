@@ -7,9 +7,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.mac.allomalar.R
-import com.mac.allomalar.adapters.PagerAdapter
-import com.mac.allomalar.adapters.ScholarsAdapter
+import com.mac.allomalar.adapters.MadrasasAdapter
 import com.mac.allomalar.databinding.FragmentPagerBinding
 
 private const val ARG_PARAM1 = "param1"
@@ -19,7 +17,7 @@ class PagerFragment(position: Int) : Fragment() {
     private val TAG = "_Pager"
     private lateinit var binding: FragmentPagerBinding
     var pos: Int = position
-    private  var adapter: ScholarsAdapter = ScholarsAdapter(pos)
+    private  var adapter: MadrasasAdapter = MadrasasAdapter(pos)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
