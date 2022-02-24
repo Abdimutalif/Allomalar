@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.mac.allomalar">
 
+    <uses-permission android:name="android.permission.INTERNET" />
     <application
         android:name=".BaseApplication"
         android:allowBackup="true"
@@ -12,7 +13,7 @@
         android:theme="@style/Theme.Allomalar">
         <activity
             android:name=".ui.avtivoties.MyTestActivity"
-            android:exported="false" />
+            android:exported="true"></activity>
         <activity
             android:name=".ui.avtivoties.AllomalarActivity"
             android:exported="true"

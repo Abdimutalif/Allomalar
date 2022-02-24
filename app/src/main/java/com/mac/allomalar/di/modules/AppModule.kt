@@ -17,6 +17,9 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 class AppModule {
 
+    @Provides
+    fun provideBaseUrl() = Constants.BASE_URL
+
     @Singleton
     @Provides
     fun provideHTTPLoggingInterceptor() = HttpLoggingInterceptor()
