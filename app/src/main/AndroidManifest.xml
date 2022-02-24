@@ -11,9 +11,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Allomalar">
         <activity
-            android:theme="@style/Theme.Allomalar.NoActionBar"
+            android:name=".ui.avtivoties.MyTestActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.avtivoties.AllomalarActivity"
-            android:exported="true" >
+            android:exported="true"
+            android:theme="@style/Theme.Allomalar.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
