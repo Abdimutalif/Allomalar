@@ -92,8 +92,12 @@
 
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/image_1"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:maxWidth="80dp"
+                android:maxHeight="80dp"
+                app:layout_constraintHeight_percent="0.8"
+                app:layout_constraintDimensionRatio="1:1"
                 android:layout_marginLeft="50dp"
                 app:cardCornerRadius="40dp"
                 app:cardElevation="5dp"
@@ -144,8 +148,12 @@
 
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/image_2"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:maxWidth="80dp"
+                android:maxHeight="80dp"
+                app:layout_constraintHeight_percent="0.8"
+                app:layout_constraintDimensionRatio="1:1"
                 android:layout_marginLeft="50dp"
                 app:cardCornerRadius="40dp"
                 app:cardElevation="5dp"
@@ -194,8 +202,12 @@
             app:layout_constraintTop_toBottomOf="@id/second_row">
                     <com.google.android.material.card.MaterialCardView
                         android:id="@+id/image_3"
-                        android:layout_width="80dp"
-                        android:layout_height="80dp"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:maxWidth="80dp"
+                        android:maxHeight="80dp"
+                        app:layout_constraintHeight_percent="0.8"
+                        app:layout_constraintDimensionRatio="1:1"
                         android:layout_marginLeft="50dp"
                         app:cardCornerRadius="40dp"
                         app:layout_constraintTop_toTopOf="parent"
