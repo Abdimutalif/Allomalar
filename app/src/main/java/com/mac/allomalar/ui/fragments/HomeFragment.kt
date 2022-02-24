@@ -14,6 +14,8 @@ import com.mac.allomalar.databinding.FragmentPagerBinding
 
 class HomeFragment : Fragment() {
     private val TAG = "HomeFragment"
+
+
     private lateinit var binding: FragmentHomeBinding
     private lateinit var pagerAdapter: PagerAdapter
     val list = ArrayList<PagerFragment>()
@@ -23,9 +25,9 @@ class HomeFragment : Fragment() {
         Log.d(TAG, "onCreate: $this")
 
         for (i in 0..7) {
-            val fragment = PagerFragment.getInstance(i)
-            Log.d(TAG, "fragment[$i] -> $fragment")
-            list.add(fragment)
+//            val fragment = PagerFragment.getInstance(cen)
+//            Log.d(TAG, "fragment[$i] -> $fragment")
+//            list.add(fragment)
         }
     }
 

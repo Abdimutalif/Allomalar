@@ -4,10 +4,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mac.allomalar.internet.Repository
+import com.mac.allomalar.repository.Repository
 import com.mac.allomalar.models.Alloma
 import com.mac.allomalar.models.Resource
-import com.mac.allomalar.models.just_for_test.UserRespond
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject

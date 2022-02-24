@@ -14,21 +14,24 @@ import androidx.navigation.fragment.findNavController
 import com.mac.allomalar.R
 import com.mac.allomalar.adapters.MadrasasAdapter
 import com.mac.allomalar.databinding.FragmentPagerBinding
+import com.mac.allomalar.models.Century
 
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
 
-class PagerFragment(position: Int) : Fragment() {
+class PagerFragment(century: Century) : Fragment() {
     private val TAG = "_Pager"
     private lateinit var binding: FragmentPagerBinding
-    var pos: Int = position
-    private  var adapter: MadrasasAdapter = MadrasasAdapter(pos, object : MadrasasAdapter.MadrasaSetOnClickListener{
-        override fun onMadrasaClickListener(madrasa: Any, position: Int) {
-            Toast.makeText(requireContext(), "clicked", Toast.LENGTH_SHORT).show()
-            findNavController().navigate(R.id.action_fr_home_to_madrasaFragment)
+    private var century = century
 
-        }
-    })
+    private var adapter: MadrasasAdapter =
+        MadrasasAdapter(4, object : MadrasasAdapter.MadrasaSetOnClickListener {
+            override fun onMadrasaClickListener(madrasa: Any, position: Int) {
+                Toast.makeText(requireContext(), "clicked", Toast.LENGTH_SHORT).show()
+                findNavController().navigate(R.id.action_fr_home_to_madrasaFragment)
+
+            }
+        })
 
 
     override fun onCreateView(
@@ -45,7 +48,7 @@ class PagerFragment(position: Int) : Fragment() {
         setAdapter()
         Log.d(TAG, "onViewCreated: $this")
     }
-    
+
     @SuppressLint("NotifyDataSetChanged")
     override fun onResume() {
         super.onResume()
@@ -69,12 +72,13 @@ class PagerFragment(position: Int) : Fragment() {
         super.onPause()
         Log.d(TAG, "onPause: $this")
     }
+
     private fun setAdapter() {
         binding.rv.adapter = adapter
     }
-    
-    companion object{
-        fun getInstance(pos: Int): PagerFragment = PagerFragment(pos)
+
+    companion object {
+        fun getInstance(century: Century): PagerFragment = PagerFragment(century)
     }
 
 }

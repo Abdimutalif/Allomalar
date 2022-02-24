@@ -1,11 +1,15 @@
 package com.mac.allomalar.di.modules
 
+import android.content.Context
+import androidx.core.app.ActivityCompat
+import com.mac.allomalar.db.database.AppDatabase
 import com.mac.allomalar.internet.ApiService
-import com.mac.allomalar.internet.Repository
+import com.mac.allomalar.repository.Repository
 import com.mac.allomalar.others.Constants
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -50,6 +54,10 @@ class AppModule {
 
     @Singleton
     @Provides
-    fun providesRepository(apiService: ApiService) = Repository(apiService)
+    fun providesRepository(apiService: ApiService, appDatabase: AppDatabase) = Repository(apiService, appDatabase)
+
+    @Singleton
+    @Provides
+    fun provideDatabase(@ApplicationContext context: Context) = AppDatabase.getInstance(context)
 
 }

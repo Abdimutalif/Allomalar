@@ -87,5 +87,7 @@ dependencies {
     implementation "com.squareup.okhttp3:logging-interceptor:$httplogging_version"
     implementation "com.google.code.gson:gson:$json_version"
 
-
+    //Room
+    implementation "androidx.room:room-runtime:$room_version"
+    annotationProcessor "androidx.room:room-compiler:$room_version"
 }
