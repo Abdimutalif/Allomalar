@@ -1,4 +1,4 @@
-package com.mac.allomalar.ui
+package com.mac.allomalar.ui.avtivoties
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle

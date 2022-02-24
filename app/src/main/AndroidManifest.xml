@@ -12,7 +12,7 @@
         android:theme="@style/Theme.Allomalar">
         <activity
             android:theme="@style/Theme.Allomalar.NoActionBar"
-            android:name=".ui.AllomalarActivity"
+            android:name=".ui.avtivoties.AllomalarActivity"
             android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
