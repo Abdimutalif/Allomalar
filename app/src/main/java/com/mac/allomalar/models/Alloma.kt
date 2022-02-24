@@ -1,12 +1,18 @@
 package com.mac.allomalar.models
 
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+import java.io.Serializable
+
+@Entity
 data class Alloma(
-    val about: String,
-    val allomamenu: List<String>,
-    val birth_area: String,
-    val birth_year: String,
-    val id: Int,
-    val image: String,
-    val madrasa_alloma: String,
-    val name: String
+    @ColumnInfo(name="alloma_about")val about: String,
+    @ColumnInfo(name="allomamenu")val allomamenu: List<String>,
+    @ColumnInfo(name="alloma_birth_area")val birth_area: String,
+    @ColumnInfo(name="alloma_birth_year")val birth_year: String,
+    @PrimaryKey val id: Int,
+    @ColumnInfo(name="alloma_image")val image: String,
+    @ColumnInfo(name="alloma_madrasa")val madrasa_alloma: String,
+    @ColumnInfo(name="alloma_name")val name: String
 )

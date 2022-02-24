@@ -1,4 +1,20 @@
 package com.mac.allomalar.db.daos
 
-class AllomaDao {
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.OnConflictStrategy.REPLACE
+import androidx.room.Query
+import com.mac.allomalar.models.Alloma
+
+
+@Dao
+interface AllomaDao {
+
+    @Query("Select*from alloma")
+    fun getAlloma():List<Alloma>
+
+    @Insert(onConflict =REPLACE)
+    suspend fun addAlloma(list: List<Alloma>)
+
 }

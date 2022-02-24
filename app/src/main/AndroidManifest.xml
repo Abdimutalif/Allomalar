@@ -13,7 +13,7 @@
         android:theme="@style/Theme.Allomalar">
         <activity
             android:name=".ui.avtivoties.MyTestActivity"
-            android:exported="true"></activity>
+            android:exported="false"></activity>
         <activity
             android:name=".ui.avtivoties.AllomalarActivity"
             android:exported="true"

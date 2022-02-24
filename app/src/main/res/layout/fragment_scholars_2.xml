@@ -39,15 +39,15 @@
                 <ImageView
                     android:id="@+id/iv_Scholar"
                     android:layout_width="90dp"
-                    android:layout_height="117dp"
-                    android:layout_marginLeft="46dp"
-                    android:layout_marginTop="16dp"
+                    android:layout_height="115dp"
+                    android:layout_marginLeft="40dp"
+                    android:layout_marginTop="15dp"
                     android:contentDescription="TODO"
                     android:src="@drawable/ibn_sino_image"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintHorizontal_bias="0"
                     app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintRight_toLeftOf="@id/tv_scholar_name"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintVertical_bias="0" />
 
@@ -58,7 +58,7 @@
                     android:layout_marginHorizontal="20dp"
                     android:fontFamily="@font/andada_pro"
                     android:maxLines="3"
-                    android:text="Abbu aliy ibn Sino \n (980 - 1037)"
+                    android:text="Abu ali ibn Sino \n (980 - 1037)"
                     android:textAllCaps="true"
                     android:textSize="22sp"
                     android:textStyle="bold"
@@ -95,7 +95,7 @@
                 android:id="@+id/rv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="5dp"
                 android:orientation="vertical"
                 android:overScrollMode="never"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
