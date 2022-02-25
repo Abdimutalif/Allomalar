@@ -12,4 +12,5 @@ interface ApiService {
 
     @GET("2")
     suspend fun getScholar(): Response<Alloma>
+
 }

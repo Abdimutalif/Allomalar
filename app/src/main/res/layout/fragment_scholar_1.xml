@@ -70,7 +70,7 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.6" />
+        app:layout_constraintGuide_begin="534dp" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -88,7 +88,8 @@
             app:layout_constraintHeight_percent="0.33"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent"
+            android:paddingVertical="15dp">
 
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/image_1"
@@ -111,15 +112,14 @@
                     android:layout_margin="8dp"
                     android:src="@drawable/ijod_yunalishi_image" />
             </com.google.android.material.card.MaterialCardView>
-
             <TextView
-                android:id="@+id/tv_ijod_yonalishlari"
+                android:id="@+id/tv_ijod_yunalishlari"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="16dp"
                 android:gravity="center_vertical"
-                android:text="ijod \nyo‘nalishlari"
+                android:text="Ijod yo'nalishlari"
                 android:textAllCaps="true"
                 android:textColor="@color/black"
                 android:textSize="20sp"
@@ -136,6 +136,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:orientation="horizontal"
+            android:paddingVertical="15dp"
             app:layout_constraintBottom_toTopOf="@id/third_row"
             app:layout_constraintHeight_percent="0.33"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -187,6 +188,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:orientation="horizontal"
+            android:paddingVertical="15dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintHeight_percent="0.33"
             app:layout_constraintLeft_toLeftOf="parent"

@@ -7,7 +7,10 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AllomalarViewModel @Inject constructor(
-    private val repository: Repository
+    private val repository: Repository,
 ) : ViewModel() {
     val centuries = repository.getAllCenturies()
+    val allomas=repository.getAllAllomas()
+    val alloma=repository.getAlloma()
+    val madrasas=repository.getMadrasas()
 }

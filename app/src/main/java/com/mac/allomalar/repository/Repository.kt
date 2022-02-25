@@ -12,4 +12,10 @@ class Repository @Inject constructor(
 
     suspend fun getAllUsers() = apiService.getScholar()
     fun getAllCenturies() = appDatabase.centuryDao().getAllCenturies()
+
+    fun getAllAllomas()=appDatabase.allomasDao().getAllAllomas()
+
+    fun getAlloma()=appDatabase.allomaDao().getAlloma()
+
+    fun getMadrasas()=appDatabase.madrasasDao().getAllMadrasas()
 }

@@ -8,4 +8,5 @@ import com.mac.allomalar.models.Century
 interface CenturyDao {
     @Query("Select * from centuries")
     fun getAllCenturies(): List<Century>
+
 }

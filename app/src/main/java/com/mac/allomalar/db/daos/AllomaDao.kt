@@ -14,7 +14,12 @@ interface AllomaDao {
     @Query("Select*from alloma")
     fun getAlloma():List<Alloma>
 
+    @Insert
+    suspend fun addAlloma(alloma: Alloma)
+
     @Insert(onConflict =REPLACE)
-    suspend fun addAlloma(list: List<Alloma>)
+    suspend fun addAllomas(list: List<Alloma>)
+
+
 
 }

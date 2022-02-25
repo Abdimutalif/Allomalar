@@ -37,7 +37,7 @@ class Scholar_1Fragment : Fragment() {
     }
 
     private fun setListeners() {
-        binding.tvIjodYonalishlari.setOnClickListener {
+        binding.tvIjodYunalishlari.setOnClickListener {
             navigate1()
         }
 
