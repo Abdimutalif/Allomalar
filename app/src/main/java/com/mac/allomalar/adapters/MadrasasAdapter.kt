@@ -1,20 +1,29 @@
 package com.mac.allomalar.adapters
 
 import android.view.LayoutInflater
+import android.view.TextureView
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.card.MaterialCardView
 import com.mac.allomalar.R
+import com.mac.allomalar.models.Century
+import com.mac.allomalar.models.Madrasa
 
-class MadrasasAdapter(var number: Int, var onClick: MadrasaSetOnClickListener) : RecyclerView.Adapter<MadrasasAdapter.ViewHolder>() {
+class MadrasasAdapter(
+    var list: List<Madrasa?>,
+    val century: Century,
+    private var onClick: MadrasaSetOnClickListener
+) : RecyclerView.Adapter<MadrasasAdapter.ViewHolder>() {
 
     inner class ViewHolder(var view: View) : RecyclerView.ViewHolder(view) {
-        fun onBind(madrasa: Any, position: Int){
-           var card =  view.findViewById<MaterialCardView>(R.id.card_root_name_madrasa)
+        fun onBind(madrasa: Madrasa, position: Int) {
+            val card = view.findViewById<MaterialCardView>(R.id.card_root_name_madrasa)
             card.setOnClickListener {
                 onClick.onMadrasaClickListener(madrasa, position)
             }
+            card.findViewById<TextView>(R.id.tv_madrasa_name).text = madrasa.name
         }
     }
 
@@ -25,12 +34,12 @@ class MadrasasAdapter(var number: Int, var onClick: MadrasaSetOnClickListener) :
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.onBind("", position)
+        holder.onBind(list[position]!!, position)
     }
 
-    override fun getItemCount(): Int = 5 + number
+    override fun getItemCount(): Int = list.size
 
-    interface MadrasaSetOnClickListener{
-        fun onMadrasaClickListener(madrasa: Any, position: Int)
+    interface MadrasaSetOnClickListener {
+        fun onMadrasaClickListener(madrasa: Madrasa, position: Int)
     }
 }

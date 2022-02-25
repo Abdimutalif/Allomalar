@@ -2,6 +2,8 @@ package com.mac.allomalar.di.modules
 
 import android.content.Context
 import androidx.core.app.ActivityCompat
+import androidx.room.Room
+import com.mac.allomalar.db.daos.CenturyDao
 import com.mac.allomalar.db.database.AppDatabase
 import com.mac.allomalar.internet.ApiService
 import com.mac.allomalar.repository.Repository
@@ -11,10 +13,14 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.SupervisorJob
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import javax.annotation.Signed
+import javax.inject.Qualifier
 import javax.inject.Singleton
 
 @Module
@@ -54,10 +60,41 @@ class AppModule {
 
     @Singleton
     @Provides
-    fun providesRepository(apiService: ApiService, appDatabase: AppDatabase) = Repository(apiService, appDatabase)
+    fun providesRepository(apiService: ApiService, centuryDao: CenturyDao) = Repository(apiService, centuryDao)
+
+//    @Singleton
+//    @Provides
+//    fun provideDatabase(@ApplicationContext
+//    context: Context,
+//    callback: AppDatabase.Callback) = Room
+//        .databaseBuilder(context, AppDatabase::class.java, "scholar_database")
+//        .fallbackToDestructiveMigration()
+//        .addCallback(callback)
+//        .build()
+//
+//    @Provides
+//    fun provideCenturyDao(database: AppDatabase) = database.centuryDao()
+//
+// //   @ApplicationScope
+//    @Provides
+//    @Singleton
+//    fun provideApplicationScope() = CoroutineScope(SupervisorJob())
 
     @Singleton
     @Provides
-    fun provideDatabase(@ApplicationContext context: Context) = AppDatabase.getInstance(context)
+    fun provideAppDatabase(
+        @ApplicationContext context: Context
+    ) = Room.databaseBuilder(
+        context,
+        AppDatabase::class.java,
+        "scholars_database"
+    ).build()
 
+    @Singleton
+    @Provides
+    fun provideCenturyDao(database: AppDatabase) = database.centuryDao()
 }
+
+//@Retention(AnnotationRetention.RUNTIME)
+//@Qualifier
+//annotation class ApplicationScope
