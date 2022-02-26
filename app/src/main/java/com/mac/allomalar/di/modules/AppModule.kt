@@ -62,11 +62,7 @@ class AppModule {
     @Provides
     fun provideAppDatabase(
         @ApplicationContext context: Context
-    ) = Room.databaseBuilder(
-        context,
-        AppDatabase::class.java,
-        "scholars_database_2"
-    ).build()
+    ) = AppDatabase.getInstance(context)
 
     @Singleton
     @Provides

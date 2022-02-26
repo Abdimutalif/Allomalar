@@ -1,9 +1,7 @@
 package com.mac.allomalar.db.database
 
-import androidx.room.Database
-import androidx.room.RoomDatabase
-import androidx.room.TypeConverter
-import androidx.room.TypeConverters
+import android.content.Context
+import androidx.room.*
 import com.mac.allomalar.db.daos.*
 import com.mac.allomalar.models.*
 import com.mac.allomalar.utils.Converters
@@ -21,4 +19,26 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun madrasaAndAllomasDao(): MadrasaAndAllomasDao
     abstract fun madrasaDao(): MadrasaDao
     abstract fun subjectDao(): SubjectDao
+
+    companion object {
+        @Volatile
+        private var INSTANCE: AppDatabase? = null
+        fun getInstance(context: Context): AppDatabase {
+            val tempInstance = INSTANCE
+            if (tempInstance != null) {
+                return tempInstance
+            }
+            synchronized(this) {
+                val instance = Room.databaseBuilder(
+                    context.applicationContext,
+                    AppDatabase::class.java,
+                    "my_database_allomalar"
+                )
+                    .allowMainThreadQueries()
+                    .build()
+                INSTANCE = instance
+                return instance
+            }
+        }
+    }
 }

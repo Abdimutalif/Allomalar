@@ -3,6 +3,7 @@ package com.mac.allomalar.internet
 import com.mac.allomalar.models.Alloma
 import com.mac.allomalar.models.Century
 import com.mac.allomalar.models.Madrasa
+import com.mac.allomalar.models.MadrasaAndAllomas
 import retrofit2.Response
 import retrofit2.http.GET
 
@@ -17,4 +18,7 @@ interface ApiService {
 
     @GET("centuries/madrasas/")
     suspend fun getMadrasas(): Response<List<Madrasa>>
+
+    @GET("centuries/madrasas/allomas")
+    suspend fun getMadrasaAndAllomas(): Response<List<MadrasaAndAllomas>>
 }

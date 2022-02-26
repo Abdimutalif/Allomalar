@@ -7,20 +7,26 @@ import androidx.lifecycle.viewModelScope
 import com.mac.allomalar.models.Century
 import com.mac.allomalar.models.ResourceList
 import com.mac.allomalar.repository.Repository
+import com.mac.allomalar.utils.NetworkHelper
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class HomeFragmentViewModel @Inject constructor(
-    private val repository: Repository
+    private val repository: Repository,
+    private val networkHelper: NetworkHelper
 ) : ViewModel() {
+
+
     private val _centuryLiveData = MutableLiveData<ResourceList<Century>>()
     val centuries: LiveData<ResourceList<Century>>
         get() = _centuryLiveData
 
     init {
-        getCenturies()
+        if (networkHelper.isNetworkConnected()) {
+            getCenturies()
+        }
     }
 
     suspend fun insertAllCenturies(list: List<Century?>?) = repository.insertAllData(list)

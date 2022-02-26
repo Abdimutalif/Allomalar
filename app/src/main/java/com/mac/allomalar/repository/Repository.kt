@@ -34,10 +34,10 @@ class Repository @Inject constructor(
     suspend fun insertAllomas(list: List<Alloma>) = allomasDao.insertAllomas(list)
 
     suspend fun getAllMadrasaAndAllomasFromRoom() = madrasaAndAllomasDao.getAllMadrasaAndAllomas()
-    suspend fun getAllMadrasaAndAllomas(madrasaAndAllomas: MadrasaAndAllomas) =
+    suspend fun insertMadrasaAndAllomas(madrasaAndAllomas: MadrasaAndAllomas) =
         madrasaAndAllomasDao.insertMadrasaAndAllomas(madrasaAndAllomas)
 
-    suspend fun insertMadrasaAndAllomasAll(list: List<MadrasaAndAllomas>) =
+    suspend fun insertMadrasaAndAllomasAll(list: List<MadrasaAndAllomas?>?) =
         madrasaAndAllomasDao.insertMadrasaAndAllomasAll(list)
 
     suspend fun getAllMadrasasFromRoom() = madrasaDao.getAllMadrasas()
@@ -51,5 +51,5 @@ class Repository @Inject constructor(
     suspend fun getAllUsers() = apiService.getScholar()
     suspend fun getAllCenturies() = apiService.getCenturies()
     suspend fun getAllMadrasas() = apiService.getMadrasas()
-
+    suspend fun getMadrasaAndAllomas() = apiService.getMadrasaAndAllomas()
 }

@@ -19,7 +19,7 @@ interface MadrasaAndAllomasDao {
     suspend fun insertMadrasaAndAllomas(madrasaAndAllomas: MadrasaAndAllomas)
 
     @Insert(onConflict =REPLACE)
-    suspend fun insertMadrasaAndAllomasAll(list: List<MadrasaAndAllomas>)
+    suspend fun insertMadrasaAndAllomasAll(list: List<MadrasaAndAllomas?>?)
 
 
 

@@ -9,6 +9,5 @@ import javax.inject.Inject
 class AllomalarViewModel @Inject constructor(
     private val repository: Repository
 ) : ViewModel() {
-
     suspend fun getAllCenturiesFromRoom() = repository.getAllCenturiesFromRoom()
 }
