@@ -12,6 +12,7 @@ import androidx.lifecycle.MutableLiveData
 import com.google.android.material.snackbar.Snackbar
 import com.mac.allomalar.databinding.ActivitySplashBinding
 import com.mac.allomalar.models.Status
+import com.mac.allomalar.utils.MyService
 import com.mac.allomalar.utils.NetworkHelper
 import com.mac.allomalar.utils.NetworkStateChangeReceiver
 import com.mac.allomalar.view_models.SplashViewModel
@@ -23,20 +24,19 @@ import javax.inject.Inject
 @AndroidEntryPoint
 open class SplashActivity : AppCompatActivity(),
     NetworkStateChangeReceiver.ConnectivityReceiverListener {
-    var isFirst = true
-
     @Inject
     lateinit var networkHelper: NetworkHelper
 
-    var a = 0
-    private val _go = MutableLiveData<Int>()
+    @Inject
+    lateinit var myService: MyService
 
+    var a = 0
+    var isFirst = true
+    private val _go = MutableLiveData<Int>()
     private var mSnackBar: Snackbar? = null
     private lateinit var binding: ActivitySplashBinding
     private val uiScope = CoroutineScope(Dispatchers.Main)
     private val viewModel: SplashViewModel by viewModels()
-    private var job1 = Job()
-    private var job2 = Job()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,10 +47,12 @@ open class SplashActivity : AppCompatActivity(),
             NetworkStateChangeReceiver(),
             IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION)
         )
+
+        startService(Intent(this, MyService::class.java))
+
     }
 
     private fun showMessage(isConnected: Boolean) {
-
 
         if (!isConnected) {
             val messageToUser = "You are offline now." //TODO
@@ -62,7 +64,12 @@ open class SplashActivity : AppCompatActivity(),
             mSnackBar?.duration = Snackbar.LENGTH_INDEFINITE
             mSnackBar?.show()
 
-
+            if (isFirst) {
+                val intent = Intent(this, AllomalarActivity::class.java)
+                startActivity(intent)
+                finish()
+                isFirst = false
+            }
         } else {
             mSnackBar?.dismiss()
             binding.connecting.text = "Connecting"
@@ -73,17 +80,12 @@ open class SplashActivity : AppCompatActivity(),
         }
     }
 
-    private fun startWrite() {
+    private fun startWrite(){
         uiScope.launch {
             viewModel.allMadrasas.observe(this@SplashActivity) { resource ->
                 when (resource.status) {
                     Status.SUCCESS -> {
                         var job = CoroutineScope(Dispatchers.Main).launch {
-                            Toast.makeText(
-                                this@SplashActivity,
-                                "Started Writing Madrasa",
-                                Toast.LENGTH_SHORT
-                            ).show()
                             viewModel.insertAllMadrasa(resource.data)
                         }
                         CoroutineScope(Dispatchers.Main).launch {
@@ -91,23 +93,16 @@ open class SplashActivity : AppCompatActivity(),
                             a++
                             _go.value = a
                         }
-
                     }
                 }
-
             }
         }
 
-        uiScope.launch {
+        uiScope.async {
             viewModel.allCenturies.observe(this@SplashActivity) { resource ->
                 when (resource.status) {
                     Status.SUCCESS -> {
                         var job = CoroutineScope(Dispatchers.Main).launch {
-                            Toast.makeText(
-                                this@SplashActivity,
-                                "Started Writing Centuries",
-                                Toast.LENGTH_SHORT
-                            ).show()
                             viewModel.insertAllCenturies(resource.data)
                         }
 
@@ -118,31 +113,75 @@ open class SplashActivity : AppCompatActivity(),
                         }
                     }
                 }
-
             }
         }
+
+        uiScope.async {
+            viewModel.madrasaAndAllomasLiveData.observe(this@SplashActivity) { resource ->
+                when (resource.status) {
+                    Status.SUCCESS -> {
+                        var job = CoroutineScope(Dispatchers.Main).launch {
+                            viewModel.insertMadrasaAndAllomas(resource.data)
+                        }
+
+                        CoroutineScope(Dispatchers.Main).launch {
+                            job.join()
+                            a++
+                            _go.value = a
+                        }
+                    }
+                }
+            }
+        }
+
+
     }
 
-//    private fun readAndToast() {
-//        viewModel.allMadrasas.observe(this) {
-//            when (it.status) {
-//                Status.SUCCESS -> {
-//                    it.data?.forEach {
-//                        Toast.makeText(this, it?.name, Toast.LENGTH_SHORT).show()
-//                    }
-//                }
-//            }
-//        }
-//    }
 
     override fun onResume() {
         super.onResume()
         NetworkStateChangeReceiver.connectivityReceiverListener = this
         _go.observe(this) {
-            if (it == 2) {
-                var intent = Intent(this, AllomalarActivity::class.java)
+            if (it == 5) {
+                val intent = Intent(this, AllomalarActivity::class.java)
                 startActivity(intent)
                 finish()
+            }
+        }
+
+        uiScope.async {
+            viewModel.allAllomas.observe(this@SplashActivity) { resource ->
+                when (resource.status) {
+                    Status.SUCCESS -> {
+                        var job = CoroutineScope(Dispatchers.Main).launch {
+                            viewModel.insertAllomas(resource.data)
+                        }
+
+                        CoroutineScope(Dispatchers.Main).launch {
+                            job.join()
+                            a++
+                            _go.value = a
+                        }
+                    }
+                }
+            }
+        }
+
+        uiScope.async {
+            viewModel.allSubjects.observe(this@SplashActivity) { resource ->
+                when (resource.status) {
+                    Status.SUCCESS -> {
+                        var job = CoroutineScope(Dispatchers.Main).launch {
+                            viewModel.insertSubjects(resource.data)
+                        }
+
+                        CoroutineScope(Dispatchers.Main).launch {
+                            job.join()
+                            a++
+                            _go.value = a
+                        }
+                    }
+                }
             }
         }
     }

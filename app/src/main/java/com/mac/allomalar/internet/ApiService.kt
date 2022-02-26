@@ -1,20 +1,25 @@
 package com.mac.allomalar.internet
 
-import com.mac.allomalar.models.Alloma
-import com.mac.allomalar.models.Century
-import com.mac.allomalar.models.Madrasa
+import com.mac.allomalar.models.*
 import retrofit2.Response
 import retrofit2.http.GET
+import retrofit2.http.Path
 
 interface ApiService {
 
 
-    @GET("2")
-    suspend fun getScholar(): Response<Alloma>
+    @GET("alloma/{id}")
+    suspend fun getAlloma(@Path("id") id: Int): Response<Alloma>
+
+    @GET("alloma/{id}/subject/")
+    suspend fun geAllSubjectsOfAlloma(@Path("id") id: Int): Response<List<Subject>>
 
     @GET("centuries")
     suspend fun getCenturies(): Response<List<Century>>
 
     @GET("centuries/madrasas/")
     suspend fun getMadrasas(): Response<List<Madrasa>>
+
+    @GET("centuries/madrasas/allomas")
+    suspend fun getMadrasaAndAllomas(): Response<List<MadrasaAndAllomas>>
 }

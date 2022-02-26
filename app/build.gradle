@@ -19,12 +19,13 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
+
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
-        buildFeatures{
+        buildFeatures {
             viewBinding true
 
         }
@@ -61,10 +62,8 @@ dependencies {
     //Logging
     implementation "com.jakewharton.timber:timber:$timber_version"
 
-
-    //Room Database
-    implementation "androidx.room:room-runtime:$room_version"
-    annotationProcessor "androidx.room:room-compiler:$room_version"
+    //Picasso
+    implementation 'com.squareup.picasso:picasso:2.71828'
 
     //Navigation
     implementation 'androidx.navigation:navigation-fragment-ktx:2.4.1'

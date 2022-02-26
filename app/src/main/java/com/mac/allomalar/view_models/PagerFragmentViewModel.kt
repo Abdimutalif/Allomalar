@@ -7,21 +7,28 @@ import androidx.lifecycle.viewModelScope
 import com.mac.allomalar.models.Madrasa
 import com.mac.allomalar.models.ResourceList
 import com.mac.allomalar.repository.Repository
+import com.mac.allomalar.utils.NetworkHelper
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class PagerFragmentViewModel @Inject constructor(
-    private val repository: Repository
+    private val repository: Repository,
+    private val networkHelper: NetworkHelper
 ) : ViewModel() {
+
     private val _allMadrasasLiveData = MutableLiveData<ResourceList<Madrasa>>()
     val allMadrasas: LiveData<ResourceList<Madrasa>>
         get() = _allMadrasasLiveData
 
     init {
-        readAllMadrasa()
+        if (networkHelper.isNetworkConnected()) {
+            readAllMadrasa()
+        }
     }
+
+    suspend fun getAllMadrasaFromRoom() = repository.getAllMadrasasFromRoom()
 
     private fun readAllMadrasa() = viewModelScope.launch {
         _allMadrasasLiveData.postValue(ResourceList.loading(null))

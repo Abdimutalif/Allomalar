@@ -30,26 +30,28 @@ class Repository @Inject constructor(
         allomaAndSubjectsDao.insertAllomaAndSubjects(allomaAndSubject)
 
     suspend fun getAllAllomasFromRoom() = allomasDao.getAllAllomas()
+    suspend fun getAllomaFromRoom(id: Int) = allomasDao.getAlloma(id)
     suspend fun insertAlloma(alloma: Alloma) = allomasDao.insertAlloma(alloma)
-    suspend fun insertAllomas(list: List<Alloma>) = allomasDao.insertAllomas(list)
+    suspend fun insertAllomas(list: List<Alloma?>?) = allomasDao.insertAllomas(list)
 
     suspend fun getAllMadrasaAndAllomasFromRoom() = madrasaAndAllomasDao.getAllMadrasaAndAllomas()
-    suspend fun getAllMadrasaAndAllomas(madrasaAndAllomas: MadrasaAndAllomas) =
+    suspend fun insertMadrasaAndAllomas(madrasaAndAllomas: MadrasaAndAllomas) =
         madrasaAndAllomasDao.insertMadrasaAndAllomas(madrasaAndAllomas)
 
-    suspend fun insertMadrasaAndAllomasAll(list: List<MadrasaAndAllomas>) =
+    suspend fun insertMadrasaAndAllomasAll(list: List<MadrasaAndAllomas?>?) =
         madrasaAndAllomasDao.insertMadrasaAndAllomasAll(list)
 
     suspend fun getAllMadrasasFromRoom() = madrasaDao.getAllMadrasas()
     suspend fun insertMadrasas(list: List<Madrasa?>?) = madrasaDao.insertMadrasas(list)
 
-    suspend fun getAllSubjects() = subjectDao.getSubjects()
+    suspend fun getAllSubjectsFromRoom(allomaId: Int) = subjectDao.getSubjects(allomaId)
     suspend fun insertSubject(subject: Subject) = subjectDao.insertSubject(subject)
-    suspend fun insertSubjectsAll(list: List<Subject>) = subjectDao.insertSubjectsAll(list)
+    suspend fun insertSubjectsAll(list: List<Subject?>?) = subjectDao.insertSubjectsAll(list)
 
     //ApiService
-    suspend fun getAllUsers() = apiService.getScholar()
+    suspend fun getEachAlloma(id: Int) = apiService.getAlloma(id)
     suspend fun getAllCenturies() = apiService.getCenturies()
     suspend fun getAllMadrasas() = apiService.getMadrasas()
-
+    suspend fun getMadrasaAndAllomas() = apiService.getMadrasaAndAllomas()
+    suspend fun getAllSubjectsOfAlloma(allomaId: Int) = apiService.geAllSubjectsOfAlloma(allomaId)
 }

@@ -10,15 +10,17 @@ import com.mac.allomalar.models.Alloma
 @Dao
 interface AllomaDao {
 
-    @Query("Select*from alloma")
-    suspend fun getAllAllomas():List<Alloma>
+    @Query("Select * from alloma")
+    suspend fun getAllAllomas(): List<Alloma>
 
-    @Insert
+    @Query("Select * from alloma where id=:id ")
+    suspend fun getAlloma(id: Int): Alloma
+
+
+    @Insert(onConflict = REPLACE)
     suspend fun insertAlloma(alloma: Alloma)
 
-    @Insert(onConflict =REPLACE)
-    suspend fun insertAllomas(list: List<Alloma>)
-
-
+    @Insert(onConflict = REPLACE)
+    suspend fun insertAllomas(list: List<Alloma?>?)
 
 }

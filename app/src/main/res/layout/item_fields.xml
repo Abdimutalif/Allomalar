@@ -32,12 +32,12 @@
     </com.google.android.material.card.MaterialCardView>
 
     <TextView
-        android:id="@+id/tv_field"
+        android:id="@+id/tv_field_name_2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
         android:maxLines="3"
-        android:text="Ijod YO'nalishlari"
+        android:text="Ijod YO'nalishlari 44"
         android:textAllCaps="true"
         android:textSize="20sp"
         android:textColor="@color/black"

@@ -6,8 +6,8 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class AllomalarViewModel @Inject constructor(
-    private val repository: Repository
-) : ViewModel() {
-    suspend fun getAllCenturiesFromRoom() = repository.getAllCenturiesFromRoom()
+class Scholar2ViewModel @Inject constructor(
+   private  val repository: Repository
+): ViewModel(){
+    suspend fun getAllSubjects(allomaId: Int) = repository.getAllSubjectsFromRoom(allomaId)
 }

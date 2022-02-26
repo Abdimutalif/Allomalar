@@ -13,12 +13,12 @@ import com.mac.allomalar.models.Subject
 @Dao
 interface SubjectDao {
 
-    @Query("Select*from subjects")
-    suspend fun getSubjects(): List<Subject>
+    @Query("Select*from subjects where allomaId =:id")
+    suspend fun getSubjects(id: Int): List<Subject>
 
     @Insert
     suspend fun insertSubject(subject: Subject)
 
     @Insert(onConflict = REPLACE)
-    suspend fun insertSubjectsAll(list: List<Subject>)
+    suspend fun insertSubjectsAll(list: List<Subject?>?)
 }

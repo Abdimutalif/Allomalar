@@ -11,14 +11,15 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.snackbar.Snackbar
 import com.mac.allomalar.R
 import com.mac.allomalar.databinding.ActivityAllomalarBinding
+import com.mac.allomalar.utils.NetworkHelper
 import com.mac.allomalar.view_models.AllomalarViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.*
 
 @AndroidEntryPoint
 class AllomalarActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAllomalarBinding
-
     private val viewModel: AllomalarViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -27,7 +28,7 @@ class AllomalarActivity : AppCompatActivity() {
         setContentView(binding.root)
         supportActionBar?.hide()
         setBottomNavGraph()
-        readDatabase()
+  //      readDatabase()
     }
 
     private fun readDatabase() {
@@ -52,5 +53,8 @@ class AllomalarActivity : AppCompatActivity() {
         var navController = findNavController(R.id.fragmentContainerView)
         val bottomNav = findViewById<BottomNavigationView>(R.id.bottom_navigation_view)
         bottomNav.setupWithNavController(navController)
+    }
+
+    companion object{
     }
 }

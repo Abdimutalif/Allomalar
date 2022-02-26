@@ -15,17 +15,23 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeFragmentViewModel @Inject constructor(
     private val repository: Repository,
+    private val networkHelper: NetworkHelper
 ) : ViewModel() {
+
+
     private val _centuryLiveData = MutableLiveData<ResourceList<Century>>()
     val centuries: LiveData<ResourceList<Century>>
         get() = _centuryLiveData
 
     init {
-        getCenturies()
+        if (networkHelper.isNetworkConnected()) {
+            getCenturies()
+        }
     }
 
     suspend fun insertAllCenturies(list: List<Century?>?) = repository.insertAllData(list)
     suspend fun getAllCenturiesFromRoom() = repository.getAllCenturiesFromRoom()
+
 
     private fun getCenturies() = viewModelScope.launch {
         _centuryLiveData.postValue(ResourceList.loading(null))
