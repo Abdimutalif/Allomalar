@@ -1,4 +1,4 @@
-package com.mac.allomalar.others
+package com.mac.allomalar.utils
 
 class Constants {
      companion object{

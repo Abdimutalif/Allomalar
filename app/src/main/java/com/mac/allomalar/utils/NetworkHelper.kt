@@ -7,9 +7,7 @@ import android.os.Build
 import javax.inject.Inject
 import javax.inject.Singleton
 
-@Singleton
-class NetworkHelper @Inject constructor(private val context: Context) {
-
+class NetworkHelper constructor(private val context: Context) {
     fun isNetworkConnected(): Boolean {
         var result = false
         val connectivityManager =
@@ -33,7 +31,6 @@ class NetworkHelper @Inject constructor(private val context: Context) {
                         ConnectivityManager.TYPE_ETHERNET -> true
                         else -> false
                     }
-
                 }
             }
         }
