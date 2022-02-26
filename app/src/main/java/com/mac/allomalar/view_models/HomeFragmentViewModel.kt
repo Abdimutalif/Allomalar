@@ -7,13 +7,14 @@ import androidx.lifecycle.viewModelScope
 import com.mac.allomalar.models.Century
 import com.mac.allomalar.models.ResourceList
 import com.mac.allomalar.repository.Repository
+import com.mac.allomalar.utils.NetworkHelper
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class HomeFragmentViewModel @Inject constructor(
-    private val repository: Repository
+    private val repository: Repository,
 ) : ViewModel() {
     private val _centuryLiveData = MutableLiveData<ResourceList<Century>>()
     val centuries: LiveData<ResourceList<Century>>
@@ -25,7 +26,6 @@ class HomeFragmentViewModel @Inject constructor(
 
     suspend fun insertAllCenturies(list: List<Century?>?) = repository.insertAllData(list)
     suspend fun getAllCenturiesFromRoom() = repository.getAllCenturiesFromRoom()
-
 
     private fun getCenturies() = viewModelScope.launch {
         _centuryLiveData.postValue(ResourceList.loading(null))
