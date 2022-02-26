@@ -24,7 +24,7 @@ class HomeFragmentViewModel @Inject constructor(
     }
 
     suspend fun insertAllCenturies(list: List<Century?>?) = repository.insertAllData(list)
-    suspend fun getAllCenturies() = repository.getAllCenturiesFromRoom()
+    suspend fun getAllCenturiesFromRoom() = repository.getAllCenturiesFromRoom()
 
 
     private fun getCenturies() = viewModelScope.launch {

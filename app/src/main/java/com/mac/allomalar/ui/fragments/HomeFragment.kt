@@ -44,11 +44,21 @@ class HomeFragment : Fragment() {
 
 
         uiScope.launch {
-            setObservers()
+            fun1()
         }
         return binding.root
     }
 
+    private fun fun1(){
+        CoroutineScope(Dispatchers.Main).launch {
+            var list1 = homeViewModel.getAllCenturiesFromRoom()
+            list1.forEach{
+                val fragment = PagerFragment.getInstance(it!!)
+                list.add(fragment)
+            }
+            setAdapter()
+        }
+    }
     private fun setObservers() {
         homeViewModel.centuries.observe(viewLifecycleOwner) { resource ->
             when (resource.status) {
@@ -60,6 +70,7 @@ class HomeFragment : Fragment() {
                         val fragment = PagerFragment.getInstance(it!!)
                         list.add(fragment)
                     }
+
                     setAdapter()
 //                    CoroutineScope(Dispatchers.Main).launch {
 //                        delay(3000)
