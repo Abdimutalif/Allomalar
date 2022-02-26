@@ -32,7 +32,6 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentHomeBinding.inflate(inflater)
-
         uiScope.launch {
             setData()
         }
@@ -41,7 +40,7 @@ class HomeFragment : Fragment() {
 
     private fun setData(){
         CoroutineScope(Dispatchers.Main).launch {
-            var list1 = homeViewModel.getAllCenturiesFromRoom()
+            val list1 = homeViewModel.getAllCenturiesFromRoom()
             list.clear()
             list1.forEach{
                 val fragment = PagerFragment.getInstance(it)
@@ -50,40 +49,6 @@ class HomeFragment : Fragment() {
             setAdapter()
         }
     }
-    /**
-//    private fun setObservers() {
-//        homeViewModel.centuries.observe(viewLifecycleOwner) { resource ->
-//            when (resource.status) {
-//                Status.SUCCESS -> {
-//                    list.clear()
-//                    vp.visibility = View.VISIBLE
-//                    progress.visibility = View.GONE
-//                    resource.data?.forEach {
-//                        val fragment = PagerFragment.getInstance(it!!)
-//                        list.add(fragment)
-//                    }
-//
-//                    setAdapter()
-////                    CoroutineScope(Dispatchers.Main).launch {
-////                        delay(3000)
-////                        homeViewModel.insertAllCenturies(resource.data)
-////                        Toast.makeText(requireContext(), "I inserted", Toast.LENGTH_SHORT).show()
-////                        homeViewModel.getAllCenturies().forEach {
-////                            Toast.makeText(requireContext(), it.century, Toast.LENGTH_SHORT).show()
-////                        }
-////                    }
-//                }
-//                Status.LOADING -> {
-//                    vp.visibility = View.INVISIBLE
-//                    progress.visibility = View.VISIBLE
-//                }
-//                Status.ERROR -> {
-//                    Toast.makeText(requireContext(), resource.message, Toast.LENGTH_SHORT).show()
-//                }
-//            }
-//        }
-//    }
-**/
 
     private fun setAdapter() {
         val tab = binding.dotsIndicator

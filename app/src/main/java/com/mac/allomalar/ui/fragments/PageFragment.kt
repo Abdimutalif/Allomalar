@@ -32,7 +32,7 @@ class PagerFragment(century: Century) : Fragment() {
     private val viewModel: PagerFragmentViewModel by viewModels()
     private var list = ArrayList<Madrasa>()
     var job = Job()
-    private val uiScope = CoroutineScope(Dispatchers.Main+ job)
+    private val uiScope = CoroutineScope(Dispatchers.Main + job)
 
     private lateinit var adapter: MadrasasAdapter
 
@@ -44,7 +44,6 @@ class PagerFragment(century: Century) : Fragment() {
         binding = FragmentPagerBinding.inflate(inflater)
         setBindings()
         uiScope.launch {
-   //         setObserves()
             setData()
         }
         return binding.root
@@ -52,38 +51,13 @@ class PagerFragment(century: Century) : Fragment() {
 
     private fun setData() {
         CoroutineScope(Dispatchers.Main).launch {
-            var list1 = viewModel.getAllMadrasaFromRoom()
+            val list1 = viewModel.getAllMadrasaFromRoom()
             list.clear()
-            list1.forEach{
+            list1.forEach {
                 if (century.id == it.century_id)
-                list.add(it)
+                    list.add(it)
             }
             setAdapter(list)
-        }
-    }
-
-    private fun setObserves() {
-        viewModel.allMadrasas.observe(viewLifecycleOwner){ resource ->
-            when(resource.status){
-                Status.SUCCESS ->{
-                    binding.rv.visibility = View.VISIBLE
-                    binding.progress.visibility = View.GONE
-
-                    var list = ArrayList<Madrasa?>()
-                    resource.data?.forEach {
-                        if (it?.century_id == century.id)
-                            list.add(it)
-                    }
-                    setAdapter(list)
-                }
-                Status.ERROR ->{
-                    Toast.makeText(requireContext(), resource.message, Toast.LENGTH_SHORT).show()
-                }
-                Status.LOADING ->{
-                    binding.rv.visibility = View.INVISIBLE
-                    binding.progress.visibility = View.VISIBLE
-                }
-            }
         }
     }
 
@@ -94,16 +68,18 @@ class PagerFragment(century: Century) : Fragment() {
     }
 
     private fun setAdapter(list: List<Madrasa?>?) {
-       adapter =  MadrasasAdapter(list!!, century, object : MadrasasAdapter.MadrasaSetOnClickListener {
-            override fun onMadrasaClickListener(madrasa: Madrasa, position: Int) {
-                Toast.makeText(requireContext(), "clicked", Toast.LENGTH_SHORT).show()
-                findNavController().navigate(R.id.action_fr_home_to_madrasaFragment)
-            }
-        })
+        adapter =
+            MadrasasAdapter(list!!, century, object : MadrasasAdapter.MadrasaSetOnClickListener {
+                override fun onMadrasaClickListener(madrasa: Madrasa, position: Int) {
+                    Toast.makeText(requireContext(), "clicked", Toast.LENGTH_SHORT).show()
+                    val bundle = Bundle()
+                    bundle.putString("madrasa_name", madrasa.name)
+                    findNavController().navigate(R.id.action_fr_home_to_madrasaFragment, bundle)
+                }
+            })
 
         binding.rv.adapter = adapter
     }
-
 
 
     companion object {

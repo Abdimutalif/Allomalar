@@ -86,11 +86,6 @@ open class SplashActivity : AppCompatActivity(),
                 when (resource.status) {
                     Status.SUCCESS -> {
                         var job = CoroutineScope(Dispatchers.Main).launch {
-                            Toast.makeText(
-                                this@SplashActivity,
-                                "Started Writing Madrasa",
-                                Toast.LENGTH_SHORT
-                            ).show()
                             viewModel.insertAllMadrasa(resource.data)
                         }
                         CoroutineScope(Dispatchers.Main).launch {
@@ -108,11 +103,6 @@ open class SplashActivity : AppCompatActivity(),
                 when (resource.status) {
                     Status.SUCCESS -> {
                         var job = CoroutineScope(Dispatchers.Main).launch {
-                            Toast.makeText(
-                                this@SplashActivity,
-                                "Started Writing Centuries",
-                                Toast.LENGTH_SHORT
-                            ).show()
                             viewModel.insertAllCenturies(resource.data)
                         }
 
@@ -131,11 +121,6 @@ open class SplashActivity : AppCompatActivity(),
                 when (resource.status) {
                     Status.SUCCESS -> {
                         var job = CoroutineScope(Dispatchers.Main).launch {
-//                            Toast.makeText(
-//                                this@SplashActivity,
-//                                "Started Writing Centuries",
-//                                Toast.LENGTH_SHORT
-//                            ).show()
                             viewModel.insertMadrasaAndAllomas(resource.data)
                         }
 
@@ -148,6 +133,8 @@ open class SplashActivity : AppCompatActivity(),
                 }
             }
         }
+
+
     }
 
 
@@ -155,10 +142,46 @@ open class SplashActivity : AppCompatActivity(),
         super.onResume()
         NetworkStateChangeReceiver.connectivityReceiverListener = this
         _go.observe(this) {
-            if (it == 3) {
+            if (it == 5) {
                 val intent = Intent(this, AllomalarActivity::class.java)
                 startActivity(intent)
                 finish()
+            }
+        }
+
+        uiScope.async {
+            viewModel.allAllomas.observe(this@SplashActivity) { resource ->
+                when (resource.status) {
+                    Status.SUCCESS -> {
+                        var job = CoroutineScope(Dispatchers.Main).launch {
+                            viewModel.insertAllomas(resource.data)
+                        }
+
+                        CoroutineScope(Dispatchers.Main).launch {
+                            job.join()
+                            a++
+                            _go.value = a
+                        }
+                    }
+                }
+            }
+        }
+
+        uiScope.async {
+            viewModel.allSubjects.observe(this@SplashActivity) { resource ->
+                when (resource.status) {
+                    Status.SUCCESS -> {
+                        var job = CoroutineScope(Dispatchers.Main).launch {
+                            viewModel.insertSubjects(resource.data)
+                        }
+
+                        CoroutineScope(Dispatchers.Main).launch {
+                            job.join()
+                            a++
+                            _go.value = a
+                        }
+                    }
+                }
             }
         }
     }

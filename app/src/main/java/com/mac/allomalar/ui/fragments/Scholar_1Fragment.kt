@@ -6,25 +6,37 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.mac.allomalar.R
 import com.mac.allomalar.databinding.FragmentScholar1Binding
+import com.mac.allomalar.models.Alloma
+import com.mac.allomalar.view_models.Scholar1ViewModel
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+private const val ARG_ALLOMA_ID = "alloma_id"
 
+@AndroidEntryPoint
 class Scholar_1Fragment : Fragment() {
-    private var param1: String? = null
-    private var param2: String? = null
+    private var allomaID = -1
     private lateinit var binding: FragmentScholar1Binding
+    private lateinit var viewModel: Scholar1ViewModel
+    var job = Job()
+    private val uiScope = CoroutineScope(Dispatchers.Main + job)
+    private var alloma: Alloma? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+            allomaID = it.getInt(ARG_ALLOMA_ID)
         }
+        viewModel = ViewModelProvider(this).get(Scholar1ViewModel::class.java)
     }
 
     override fun onCreateView(
@@ -33,7 +45,20 @@ class Scholar_1Fragment : Fragment() {
     ): View? {
         binding = FragmentScholar1Binding.inflate(layoutInflater)
         setListeners()
+        setBindings()
         return binding.root
+    }
+
+    private fun setBindings() {
+        val job = uiScope.launch {
+            alloma = viewModel.getAlloma(allomaID)
+        }
+        
+        uiScope.launch {
+            job.join()
+            binding.tvName.text = alloma?.name
+            binding.tvLifeYears.text = alloma?.birth_year
+        }
     }
 
     private fun setListeners() {
@@ -63,27 +88,20 @@ class Scholar_1Fragment : Fragment() {
 
     }
 
-    private fun navigate1(){
-        findNavController().navigate(R.id.action_scholar_1Fragment_to_scholars_2Fragment)
+    private fun navigate1() {
+       val bundle = Bundle()
+        bundle.putInt("alloma_id", allomaID)
+        findNavController().navigate(R.id.action_scholar_1Fragment_to_scholars_2Fragment, bundle)
     }
 
-    private fun navigate2(){
+    private fun navigate2() {
         findNavController().navigate(R.id.action_scholar_1Fragment_to_scientificWorksFragment)
     }
 
-    private fun navigate3(){
+    private fun navigate3() {
         Toast.makeText(requireContext(), "Not Yet Implemented", Toast.LENGTH_SHORT).show()
         findNavController().navigate(R.id.action_scholar_1Fragment_to_worldFondFragment)
     }
 
-    companion object {
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            Scholar_1Fragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
-    }
+
 }
