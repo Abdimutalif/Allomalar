@@ -11,7 +11,8 @@ import com.mac.allomalar.models.Alloma
 import com.mac.allomalar.models.Madrasa
 import com.mac.allomalar.models.MadrasaAndAllomas
 
-class ScholarsAdapter(var list: List<MadrasaAndAllomas>, var onItemScholarClick: OnItemScholarClick): RecyclerView.Adapter<ScholarsAdapter.ViewHolder>() {
+class ScholarsAdapter(var list: List<MadrasaAndAllomas>, var onItemScholarClick: OnItemScholarClick)
+    : RecyclerView.Adapter<ScholarsAdapter.ViewHolder>() {
 
     inner class ViewHolder(var view: View): RecyclerView.ViewHolder(view){
         fun onBind(madrasaAndAllomas: MadrasaAndAllomas?, position: Int){
@@ -24,7 +25,6 @@ class ScholarsAdapter(var list: List<MadrasaAndAllomas>, var onItemScholarClick:
             tv.text = madrasaAndAllomas?.let {
                 it.name
             }
-
         }
     }
 

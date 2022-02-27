@@ -6,10 +6,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.mac.allomalar.R
-import com.mac.allomalar.adapters.UserAdapter
+import com.mac.allomalar.adapters.ScholarsAdapter
 import com.mac.allomalar.databinding.FragmentUserBinding
+import com.mac.allomalar.models.MadrasaAndAllomas
+import com.mac.allomalar.view_models.MadrasaViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -26,14 +33,18 @@ class UserFragment : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
     private lateinit var binding:FragmentUserBinding
-    private lateinit var adapter:UserAdapter
+    private lateinit var adapter:ScholarsAdapter
+    private lateinit var list: ArrayList<MadrasaAndAllomas>
+    private val madrasaViewModel: MadrasaViewModel by viewModels()
+    var job = Job()
+    private val uiScope = CoroutineScope(Dispatchers.Main + job)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
             param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
         }
+        list = ArrayList()
     }
 
     override fun onCreateView(
@@ -41,15 +52,31 @@ class UserFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding=FragmentUserBinding.inflate(layoutInflater)
-        setAdapter()
+        uiScope.launch {
+            getAllomasFromRoom()
+        }
         return binding.root
     }
 
+    private fun getAllomasFromRoom() {
+        CoroutineScope(Dispatchers.Main).launch {
+            list.clear()
+            val allomas = madrasaViewModel.getAllMadrasaAndAllomas()
+            allomas.forEach { madrasaAndAlloma ->
+                //           if (madrasaName == madrasaAndAlloma.madrasa_alloma)
+                list.add(madrasaAndAlloma)
+            }
+            setAdapter()
+        }
+
+    }
+
     private fun setAdapter() {
-        adapter= UserAdapter(object:UserAdapter.OnItemUserClick{
-            override fun onClick(item: Any?, position: Int) {
-                Toast.makeText(requireContext(),"User",Toast.LENGTH_LONG).show()
-              //  findNavController().navigate(R.id.action_madrasaFragment_to_scholar_1Fragment)
+        adapter= ScholarsAdapter(list,object:ScholarsAdapter.OnItemScholarClick{
+            override fun onClick(madrasaAndAllomas: MadrasaAndAllomas?, position: Int) {
+                val bundle = Bundle()
+                madrasaAndAllomas?.id?.let { bundle.putInt("alloma_id", it) }
+                findNavController().navigate(R.id.action_madrasaFragment_to_scholar_1Fragment, bundle)
             }
 
         })

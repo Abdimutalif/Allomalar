@@ -51,7 +51,6 @@ class MadrasaFragment : Fragment() {
         }
 
         binding.tvMadrasa.text = madrasaName
-
         return binding.root
     }
 
@@ -70,7 +69,7 @@ class MadrasaFragment : Fragment() {
 
 
     private fun setAdapter() {
-        adapter = ScholarsAdapter(list, object : ScholarsAdapter.OnItemScholarClick {
+            adapter = ScholarsAdapter(list, object : ScholarsAdapter.OnItemScholarClick {
             override fun onClick(madrasaAndAllomas: MadrasaAndAllomas?, position: Int) {
              val bundle = Bundle()
                 madrasaAndAllomas?.id?.let { bundle.putInt("alloma_id", it) }
