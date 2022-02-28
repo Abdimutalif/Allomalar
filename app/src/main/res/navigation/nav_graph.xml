@@ -21,11 +21,6 @@
         android:label="fragment_user"
         tools:layout="@layout/fragment_user" />
     <fragment
-        android:id="@+id/fr_settings"
-        android:name="com.mac.allomalar.ui.fragments.SettingsFragment"
-        android:label="fragment_settings"
-        tools:layout="@layout/fragment_settings" />
-    <fragment
         android:id="@+id/madrasaFragment"
         android:name="com.mac.allomalar.ui.fragments.MadrasaFragment"
         android:label="fragment_madrasa_2"
@@ -73,4 +68,9 @@
         android:name="com.mac.allomalar.ui.fragments.WorldFondFragment"
         android:label="fragment_world_fond"
         tools:layout="@layout/fragment_world_fond" />
+    <fragment
+        android:id="@+id/fr_map"
+        android:name="com.mac.allomalar.ui.fragments.MapFragment"
+        android:label="fragment_map"
+        tools:layout="@layout/fragment_map" />
 </navigation>
