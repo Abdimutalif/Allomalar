@@ -16,11 +16,6 @@
             app:destination="@id/madrasaFragment" />
     </fragment>
     <fragment
-        android:id="@+id/fr_map"
-        android:name="com.mac.allomalar.ui.fragments.MapFragment"
-        android:label="fragment_map"
-        tools:layout="@layout/fragment_map" />
-    <fragment
         android:id="@+id/fr_user"
         android:name="com.mac.allomalar.ui.fragments.UserFragment"
         android:label="fragment_user"

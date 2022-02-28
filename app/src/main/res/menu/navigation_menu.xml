@@ -12,8 +12,8 @@
         android:id="@+id/fr_user"
         android:icon="@drawable/user_account"
         android:title=""/>
-    <item
-        android:id="@+id/fr_settings"
-        android:icon="@drawable/settings"
-        android:title=""/>
+<!--    <item-->
+<!--        android:id="@+id/fr_settings"-->
+<!--        android:icon="@drawable/settings"-->
+<!--        android:title=""/>-->
 </menu>
