@@ -1,78 +1,115 @@
 package com.mac.allomalar.ui.fragments
 
+import android.annotation.SuppressLint
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
+import android.view.View.OnTouchListener
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.widget.addTextChangedListener
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.mac.allomalar.R
 import com.mac.allomalar.adapters.UserAdapter
 import com.mac.allomalar.databinding.FragmentUserBinding
+import com.mac.allomalar.models.Alloma
+import com.mac.allomalar.view_models.UserViewModel
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.android.synthetic.main.fragment_user.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [UserFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
+@AndroidEntryPoint
 class UserFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+
     private lateinit var binding:FragmentUserBinding
     private lateinit var adapter:UserAdapter
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+    private var  list : ArrayList<Alloma> = ArrayList()
+    private var  listSearch : ArrayList<Alloma> = ArrayList()
+    private val viewModel: UserViewModel by viewModels()
+    private val uiScope = CoroutineScope(Dispatchers.Main)
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         binding=FragmentUserBinding.inflate(layoutInflater)
-        setAdapter()
+        uiScope.launch {
+            readAllomasFromRoom()
+        }
         return binding.root
     }
 
-    private fun setAdapter() {
-        adapter= UserAdapter(object:UserAdapter.OnItemUserClick{
-            override fun onClick(item: Any?, position: Int) {
+    private fun readAllomasFromRoom()  = uiScope.launch {
+        list.clear()
+        list.addAll(viewModel.getAllAllomasFromRoom())
+        setAdapter(list)
+        setClick()
+
+    }
+
+    private fun setClick(){
+        binding.searchButton.setOnClickListener {
+            Toast.makeText(requireContext(), binding.etSearchAllomaByName.text, Toast.LENGTH_SHORT).show()
+            search(binding.etSearchAllomaByName.text.toString())
+        }
+
+        binding.etSearchAllomaByName.addTextChangedListener(object : TextWatcher{
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+              if(s.toString().isEmpty()) {
+                  setAdapter(list)
+              }
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+
+            }
+
+        })
+    }
+
+    override fun onResume() {
+        super.onResume()
+        binding.etSearchAllomaByName.setText("")
+    }
+
+    private fun search(part: String) {
+        listSearch.clear()
+        list.forEach {
+            if (it.name.toLowerCase().contains(part.toLowerCase())){
+                listSearch.add(it)
+                Toast.makeText(requireContext(), "Topildi", Toast.LENGTH_SHORT).show()
+            }
+            setAdapter(listSearch)
+        }
+    }
+
+    private fun setAdapter(list: List<Alloma>) {
+        adapter= UserAdapter(list, object:UserAdapter.OnItemUserClick{
+
+            override fun onClick(alloma: Alloma?, position: Int) {
                 Toast.makeText(requireContext(),"User",Toast.LENGTH_LONG).show()
-              //  findNavController().navigate(R.id.action_madrasaFragment_to_scholar_1Fragment)
+                val bundle = Bundle()
+                bundle.putInt("alloma_id", alloma?.id!!)
+                findNavController().navigate(R.id.action_fr_user_to_scholar_1Fragment, bundle)
             }
 
         })
         binding.rvPlayer.adapter=adapter
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment UserFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            UserFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
-    }
 }

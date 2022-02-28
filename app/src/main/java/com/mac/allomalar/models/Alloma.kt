@@ -11,7 +11,7 @@ data class Alloma(
     @ColumnInfo(name="alloma_birth_area")val birth_area: String,
     @ColumnInfo(name="alloma_birth_year")val birth_year: String,
     @PrimaryKey val id: Int,
-    @ColumnInfo(name="alloma_image")val image: String,
+    @ColumnInfo(name="alloma_image")val image_url: String,
     @ColumnInfo(name="alloma_madrasa")val madrasa_alloma: String,
     @ColumnInfo(name="alloma_name")val name: String
 )

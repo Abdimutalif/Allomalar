@@ -43,6 +43,14 @@ class SplashViewModel @Inject constructor(
     private val allSubjectsInside: LiveData<ResourceList<Subject>>
         get() = _allSubjectsInside
 
+    private val _allBooks = MutableLiveData<ResourceList<Book>>()
+    val allBooks : LiveData<ResourceList<Book>>
+        get() = _allBooks
+
+    private val _allSciences = MutableLiveData<ResourceList<Science>>()
+    val allScience : LiveData<ResourceList<Science>>
+        get() = _allSciences
+
     private val allomaList = ArrayList<Alloma>()
     private val subjectList = ArrayList<Subject>()
 
@@ -52,15 +60,44 @@ class SplashViewModel @Inject constructor(
         getMadrasaAndAllomas()
         getEachAllomasInside()
         getAllSubjects()
+        getAllBooks()
+        getAllSciences()
     }
+
 
     suspend fun insertAllCenturies(list: List<Century?>?) = repository.insertAllData(list)
     suspend fun insertAllMadrasa(list: List<Madrasa?>?) = repository.insertMadrasas(list)
-    suspend fun insertMadrasaAndAllomas(list: List<MadrasaAndAllomas?>?) =
-        repository.insertMadrasaAndAllomasAll(list)
-    suspend fun insertAlloma(alloma: Alloma) = repository.insertAlloma(alloma)
+    suspend fun insertMadrasaAndAllomas(list: List<MadrasaAndAllomas?>?) = repository.insertMadrasaAndAllomasAll(list)
     suspend fun insertAllomas(list: List<Alloma?>?) = repository.insertAllomas(list)
     suspend fun insertSubjects(list: List<Subject?>?) = repository.insertSubjectsAll(list)
+    suspend fun insertAllBooks(list: List<Book?>?) = repository.insertBooks(list)
+    suspend fun insertAllSciences(list: List<Science?>?) = repository.insertSciences(list)
+    suspend fun insertAllMadrasaAndYears(list: List<MadrasaAndYears?>?) = repository.insertMadrasasAndYears(list)
+
+    private fun getAllSciences() = viewModelScope.launch {
+        _allSciences.postValue(ResourceList.loading(null))
+
+        repository.getAllScience().let {
+            if (it.isSuccessful){
+                _allSciences.postValue(ResourceList.success(it.body()))
+            }else{
+                _allSciences.postValue(ResourceList.error(it.message(), null))
+            }
+        }
+    }
+
+    private fun getAllBooks() = viewModelScope.launch {
+        _allBooks.postValue(ResourceList.loading(null))
+
+        repository.getAllBooks().let {
+            if (it.isSuccessful){
+                _allBooks.postValue(ResourceList.success(it.body()))
+            }else{
+                _allBooks.postValue(ResourceList.error(it.message(), null))
+            }
+        }
+    }
+
     private fun getAllSubjects()  = viewModelScope.launch {
         var isShouldDo = true
         var i = 1

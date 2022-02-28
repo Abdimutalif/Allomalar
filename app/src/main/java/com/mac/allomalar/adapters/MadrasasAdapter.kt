@@ -13,16 +13,29 @@ import com.mac.allomalar.models.Madrasa
 
 class MadrasasAdapter(
     var list: List<Madrasa?>,
+    var listPrevious: List<Madrasa?>?,
     val century: Century,
     private var onClick: MadrasaSetOnClickListener
 ) : RecyclerView.Adapter<MadrasasAdapter.ViewHolder>() {
 
     inner class ViewHolder(var view: View) : RecyclerView.ViewHolder(view) {
         fun onBind(madrasa: Madrasa, position: Int) {
+           var isAvailable = false
             val card = view.findViewById<MaterialCardView>(R.id.card_root_name_madrasa)
             card.setOnClickListener {
                 onClick.onMadrasaClickListener(madrasa, position)
             }
+//            listPrevious?.let {
+//               it.forEach {
+//                    if (it?.name == madrasa?.name){
+//                        isAvailable = true
+//                    }
+//                }
+//            }
+//            if (isAvailable){
+//                card.setCardBackgroundColor(R.color.card_green!!)
+//            }
+
             card.findViewById<TextView>(R.id.tv_madrasa_name).text = madrasa.name
         }
     }

@@ -26,7 +26,7 @@ class FieldsAdapter(var list: List<Subject>, var onFieldClick: OnFieldClick) :
             tv.text = subject?.name
 
 //            Picasso.get()
-//                .load(Constants.BASE_URL + subject?.image)
+//                .load(Constants.BASE_URL + subject?.image_url)
 //                .into(imageView)
         }
     }

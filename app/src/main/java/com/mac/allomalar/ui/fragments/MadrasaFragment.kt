@@ -20,12 +20,14 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
-private const val ARG_MADRASA_ID = "madrasa_name"
+private const val ARG_MADRASA_NAME = "madrasa_name"
+private const val ARG_MADRASA_ID = "madrasa_id"
 private lateinit var binding: FragmentMadrasa2Binding
 
 @AndroidEntryPoint
 class MadrasaFragment : Fragment() {
     private var madrasaName: String? = null
+    private var madrasaId: Int = -1
     private lateinit var adapter: ScholarsAdapter
     private lateinit var list: ArrayList<MadrasaAndAllomas>
     private val madrasaViewModel: MadrasaViewModel by viewModels()
@@ -36,7 +38,8 @@ class MadrasaFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            madrasaName = it.getString(ARG_MADRASA_ID)
+            madrasaName = it.getString(ARG_MADRASA_NAME)
+            madrasaId = it.getInt(ARG_MADRASA_ID)
         }
         list = ArrayList()
     }
@@ -60,7 +63,7 @@ class MadrasaFragment : Fragment() {
             list.clear()
             val allomas = madrasaViewModel.getAllMadrasaAndAllomas()
             allomas.forEach { madrasaAndAlloma ->
-     //           if (madrasaName == madrasaAndAlloma.madrasa_alloma)
+                if (madrasaId == madrasaAndAlloma.madrasa_alloma)
                 list.add(madrasaAndAlloma)
             }
             setAdapter()

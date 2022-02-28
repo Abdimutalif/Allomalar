@@ -22,6 +22,7 @@ class NetworkStateChangeReceiver : BroadcastReceiver(){
 
     interface ConnectivityReceiverListener {
         fun onNetworkConnectionChanged(isConnected: Boolean)
+
     }
 
     companion object {

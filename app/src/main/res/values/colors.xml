@@ -16,4 +16,5 @@
     <color name="black_for_text">#170000</color>
     <color name="card_yellow">#FFCC7F</color>
     <color name="card_green">#D1EEA1</color>
+    <color name="color_hint">#878383</color>
 </resources>

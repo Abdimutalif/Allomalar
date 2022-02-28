@@ -5,24 +5,34 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.mac.allomalar.R
+import androidx.fragment.app.viewModels
+import com.mac.allomalar.adapters.WorldFondAdapter
 import com.mac.allomalar.databinding.FragmentWorldFondBinding
+import com.mac.allomalar.models.Book
+import com.mac.allomalar.models.Science
+import com.mac.allomalar.view_models.WorldFondViewModel
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+private const val ARG_ALLOMA_ID = "alloma_id"
+private const val ARG_ALLOMA_NAME = "alloma_name"
 
+@AndroidEntryPoint
 class WorldFondFragment : Fragment() {
     private lateinit var binding: FragmentWorldFondBinding
-    private var param1: String? = null
-    private var param2: String? = null
+    private var allomaId: Int =-1
+    private var allomaName:  String? = null
+    private lateinit var adapter : WorldFondAdapter
+    private val viewModel: WorldFondViewModel by viewModels()
+    private val uiScope = CoroutineScope(Dispatchers.Main)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+            allomaId = it.getInt(ARG_ALLOMA_ID)
+            allomaName = it.getString(ARG_ALLOMA_NAME)
         }
     }
 
@@ -31,28 +41,22 @@ class WorldFondFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentWorldFondBinding.inflate(layoutInflater)
+        binding.toolBar.title = allomaName
 
-        binding.toolBar.title = "Title here and change"
+        uiScope.launch {
+           readAllScienceFromRoom()
+        }
         return binding.root
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment WorldFondFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            WorldFondFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+    private fun readAllScienceFromRoom() = uiScope.launch {
+        val list = viewModel.getAllScienceFromRoom(allomaId)
+        setAdapter(list)
     }
+
+    private fun setAdapter(list: List<Science>) {
+        adapter = WorldFondAdapter(list)
+        binding.rvWorldFond.adapter = adapter
+    }
+
 }

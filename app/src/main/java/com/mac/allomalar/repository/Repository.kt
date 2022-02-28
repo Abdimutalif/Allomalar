@@ -17,6 +17,9 @@ class Repository @Inject constructor(
     private val madrasaAndAllomasDao = appDatabase.madrasaAndAllomasDao()
     private val madrasaDao = appDatabase.madrasaDao()
     private val subjectDao = appDatabase.subjectDao()
+    private val bookDao = appDatabase.bookDao()
+    private val scienceDao = appDatabase.scienceDao()
+    private val madrasaAndYears = appDatabase.madrasaAndYearsDao()
 
     //Read Room
     suspend fun getAllCenturiesFromRoom() = centuryDao.getAllCenturies()
@@ -48,10 +51,21 @@ class Repository @Inject constructor(
     suspend fun insertSubject(subject: Subject) = subjectDao.insertSubject(subject)
     suspend fun insertSubjectsAll(list: List<Subject?>?) = subjectDao.insertSubjectsAll(list)
 
+    suspend fun getAllBooksOfAllomaFromRoom(allomaId: Int) = bookDao.getAllBookOfAlloma(allomaId)
+    suspend fun insertBooks(list: List<Book?>?) = bookDao.insertAllBooks(list)
+
+    suspend fun getAllScienceOfAllomaFromRoom(allomaId: Int) = scienceDao.getAllScienceOfAlloma(allomaId)
+    suspend fun insertSciences(list: List<Science?>?) = scienceDao.insertAllScience(list)
+
+    suspend fun getAllMadrasaAndYearsOfAllomaFromRoom() = madrasaAndYears.getAllMadrasa()
+    suspend fun insertMadrasasAndYears(list: List<MadrasaAndYears?>?) = madrasaAndYears.insertAllMadrasaYears(list)
+
     //ApiService
     suspend fun getEachAlloma(id: Int) = apiService.getAlloma(id)
     suspend fun getAllCenturies() = apiService.getCenturies()
     suspend fun getAllMadrasas() = apiService.getMadrasas()
     suspend fun getMadrasaAndAllomas() = apiService.getMadrasaAndAllomas()
     suspend fun getAllSubjectsOfAlloma(allomaId: Int) = apiService.geAllSubjectsOfAlloma(allomaId)
+    suspend fun getAllBooks() = apiService.getAllBooks()
+    suspend fun getAllScience() = apiService.getScience()
 }

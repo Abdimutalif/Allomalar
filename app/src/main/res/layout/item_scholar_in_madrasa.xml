@@ -58,7 +58,6 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:fontFamily="@font/font"
-                    android:text="Abu Ali Ibn Sino"
                     android:textColor="@color/black"
                     android:textSize="20dp" />
             </com.google.android.material.card.MaterialCardView>

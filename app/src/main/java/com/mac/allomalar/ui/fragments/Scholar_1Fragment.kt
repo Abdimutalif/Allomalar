@@ -95,12 +95,16 @@ class Scholar_1Fragment : Fragment() {
     }
 
     private fun navigate2() {
-        findNavController().navigate(R.id.action_scholar_1Fragment_to_scientificWorksFragment)
+        val bundle = Bundle()
+        bundle.putInt("alloma_id", allomaID)
+        findNavController().navigate(R.id.action_scholar_1Fragment_to_scientificWorksFragment, bundle)
     }
 
     private fun navigate3() {
-        Toast.makeText(requireContext(), "Not Yet Implemented", Toast.LENGTH_SHORT).show()
-        findNavController().navigate(R.id.action_scholar_1Fragment_to_worldFondFragment)
+        val bundle = Bundle()
+        bundle.putInt("alloma_id", allomaID)
+        bundle.putString("alloma_name", alloma?.name)
+        findNavController().navigate(R.id.action_scholar_1Fragment_to_worldFondFragment, bundle)
     }
 
 

@@ -5,24 +5,34 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
 import com.mac.allomalar.R
 import com.mac.allomalar.adapters.ScientificWorksAdapter
 import com.mac.allomalar.databinding.FragmentScientificWorksBinding
+import com.mac.allomalar.models.Book
+import com.mac.allomalar.view_models.ScientificWorksViewModel
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+private const val ARG_PARAM = "alloma_id"
 
+@AndroidEntryPoint
 class ScientificWorksFragment : Fragment() {
-    private var param1: String? = null
-    private var param2: String? = null
+    private var allomaId: Int = -1
     private lateinit var binding: FragmentScientificWorksBinding
     private lateinit var adapter: ScientificWorksAdapter
+    private val viewModel: ScientificWorksViewModel by viewModels()
+    private val list: ArrayList<Book>  = ArrayList()
+    private val job = Job()
+    private val uiScope = CoroutineScope(Dispatchers.Main + job)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+            allomaId = it.getInt(ARG_PARAM)
         }
     }
 
@@ -31,23 +41,20 @@ class ScientificWorksFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentScientificWorksBinding.inflate(layoutInflater)
-        setAdapter()
+        uiScope.launch {
+            getBooksFromRoom()
+        }
         return binding.root
     }
 
+    private fun getBooksFromRoom() = uiScope.launch {
+        list.addAll(viewModel.getAllBooksFromRoom(allomaId))
+        setAdapter()
+    }
+
     private fun setAdapter() {
-        adapter = ScientificWorksAdapter(listOf("", "", "", "", "", "", "", "", "", "", ""))
+        adapter = ScientificWorksAdapter(list)
         binding.rv.adapter = adapter
     }
 
-    companion object {
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            ScientificWorksFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
-    }
 }

@@ -8,21 +8,19 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.card.MaterialCardView
 import com.mac.allomalar.R
-import com.mac.allomalar.models.Book
+import com.mac.allomalar.models.Science
 
-class ScientificWorksAdapter(var list: List<Book?>) :
-    RecyclerView.Adapter<ScientificWorksAdapter.ViewHolder>() {
+class WorldFondAdapter(var list: List<Science>) : RecyclerView.Adapter<WorldFondAdapter.ViewHolder>() {
 
     inner class ViewHolder(var view: View) : RecyclerView.ViewHolder(view) {
-        fun onBind(book: Book?, position: Int) {
-            var tv = view.findViewById<TextView>(R.id.tv_books_of_scholar)
-            tv.text = book?.name
+        fun onBind(science: Science?, position: Int ){
+            val tv = view.findViewById<TextView>(R.id.tv_wordl_fond_text)
+            tv.text = science?.info
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view =
-            LayoutInflater.from(parent.context).inflate(R.layout.item_literature, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_world_fond, parent, false)
         return ViewHolder(view)
     }
 

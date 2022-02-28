@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey
 data class Subject(
     var allomaId: Int? = null,
     @PrimaryKey var id: Int, // 1
-    var image: String, // /images/abc.png
+    var image_url: String, // /images/abc.png
     var menu: String, // Abu Ali ibn Sino
     var name: String // Ta'lim
 )

@@ -14,7 +14,7 @@ interface ApiService {
     @GET("alloma/{id}/subject/")
     suspend fun geAllSubjectsOfAlloma(@Path("id") id: Int): Response<List<Subject>>
 
-    @GET("centuries")
+    @GET("centuries/")
     suspend fun getCenturies(): Response<List<Century>>
 
     @GET("centuries/madrasas/")
@@ -22,4 +22,10 @@ interface ApiService {
 
     @GET("centuries/madrasas/allomas")
     suspend fun getMadrasaAndAllomas(): Response<List<MadrasaAndAllomas>>
+
+    @GET("books")
+    suspend fun getAllBooks(): Response<List<Book>>
+
+    @GET("science")
+    suspend fun getScience(): Response<List<Science>>
 }

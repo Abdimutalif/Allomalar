@@ -19,7 +19,11 @@
         android:id="@+id/fr_user"
         android:name="com.mac.allomalar.ui.fragments.UserFragment"
         android:label="fragment_user"
-        tools:layout="@layout/fragment_user" />
+        tools:layout="@layout/fragment_user" >
+        <action
+            android:id="@+id/action_fr_user_to_scholar_1Fragment"
+            app:destination="@id/scholar_1Fragment" />
+    </fragment>
     <fragment
         android:id="@+id/madrasaFragment"
         android:name="com.mac.allomalar.ui.fragments.MadrasaFragment"
