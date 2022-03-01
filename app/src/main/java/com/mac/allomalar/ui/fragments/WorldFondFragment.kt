@@ -14,6 +14,7 @@ import com.mac.allomalar.view_models.WorldFondViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
 private const val ARG_ALLOMA_ID = "alloma_id"
@@ -42,6 +43,10 @@ class WorldFondFragment : Fragment() {
     ): View? {
         binding = FragmentWorldFondBinding.inflate(layoutInflater)
         binding.toolBar.title = allomaName
+
+        uiScope.launch {
+            binding.imageOfAlloma.setImageBitmap(viewModel.getImageById(viewModel.getAllomaById(allomaId).image_url)?.image)
+        }
 
         uiScope.launch {
            readAllScienceFromRoom()

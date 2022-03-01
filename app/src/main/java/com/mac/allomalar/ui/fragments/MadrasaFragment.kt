@@ -73,7 +73,7 @@ class MadrasaFragment : Fragment() {
 
 
     private fun setAdapter() {
-        adapter = ScholarsAdapter(list, object : ScholarsAdapter.OnItemScholarClick {
+        adapter = ScholarsAdapter(requireContext(), list, object : ScholarsAdapter.OnItemScholarClick {
             override fun onClick(madrasaAndAllomas: MadrasaAndAllomas?, position: Int) {
              val bundle = Bundle()
                 madrasaAndAllomas?.id?.let { bundle.putInt("alloma_id", it) }

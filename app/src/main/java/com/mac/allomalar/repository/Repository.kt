@@ -20,6 +20,7 @@ class Repository @Inject constructor(
     private val bookDao = appDatabase.bookDao()
     private val scienceDao = appDatabase.scienceDao()
     private val madrasaAndYears = appDatabase.madrasaAndYearsDao()
+    private val imageDao = appDatabase.imageDao()
 
     //Read Room
     suspend fun getAllCenturiesFromRoom() = centuryDao.getAllCenturies()
@@ -59,6 +60,10 @@ class Repository @Inject constructor(
 
     suspend fun getAllMadrasaAndYearsOfAllomaFromRoom() = madrasaAndYears.getAllMadrasa()
     suspend fun insertMadrasasAndYears(list: List<MadrasaAndYears?>?) = madrasaAndYears.insertAllMadrasaYears(list)
+
+    suspend fun getImagesListFromRoom() = imageDao.readImages()
+    suspend fun getImageFromRoomById(imageId: String) = imageDao.getImageById(imageId)
+    suspend fun insertImage(image: Image) = imageDao.insertImage(image)
 
     //ApiService
     suspend fun getEachAlloma(id: Int) = apiService.getAlloma(id)

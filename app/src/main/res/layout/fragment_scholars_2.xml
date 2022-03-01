@@ -47,7 +47,7 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintHorizontal_bias="0"
                     app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toLeftOf="@id/tv_scholar_name"
+                    app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintVertical_bias="0" />
 
@@ -58,7 +58,6 @@
                     android:layout_marginHorizontal="10dp"
                     android:fontFamily="@font/andada_pro"
                     android:maxLines="3"
-                    android:text="Abu ali ibn Sino \n (980 - 1037)"
                     android:textAllCaps="true"
                     android:textSize="20sp"
                     android:textStyle="bold"

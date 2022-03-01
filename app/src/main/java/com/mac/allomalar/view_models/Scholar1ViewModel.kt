@@ -2,6 +2,7 @@ package com.mac.allomalar.view_models
 
 import androidx.lifecycle.ViewModel
 import com.mac.allomalar.repository.Repository
+import com.mac.allomalar.utils.NetworkStateChangeReceiver
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 

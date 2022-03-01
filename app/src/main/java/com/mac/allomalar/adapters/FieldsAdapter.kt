@@ -1,5 +1,6 @@
 package com.mac.allomalar.adapters
 
+import android.content.Context
 import android.provider.CalendarContract
 import android.view.LayoutInflater
 import android.view.View
@@ -9,12 +10,18 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.card.MaterialCardView
 import com.mac.allomalar.R
+import com.mac.allomalar.db.database.AppDatabase
 import com.mac.allomalar.models.Subject
 import com.mac.allomalar.utils.Constants
 import com.squareup.picasso.Picasso
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
-class FieldsAdapter(var list: List<Subject>, var onFieldClick: OnFieldClick) :
+class FieldsAdapter(var context: Context, var list: List<Subject>, var onFieldClick: OnFieldClick) :
     RecyclerView.Adapter<FieldsAdapter.ViewHolder>() {
+
+    private var db = AppDatabase.getInstance(context)
 
     inner class ViewHolder(var view: View) : RecyclerView.ViewHolder(view) {
         fun onBind(subject: Subject?, position: Int) {
@@ -25,9 +32,11 @@ class FieldsAdapter(var list: List<Subject>, var onFieldClick: OnFieldClick) :
             val imageView = view.findViewById<ImageView>(R.id.iv_field_logo)
             tv.text = subject?.name
 
-//            Picasso.get()
-//                .load(Constants.BASE_URL + subject?.image_url)
-//                .into(imageView)
+            CoroutineScope(Dispatchers.Main).launch {
+                var image = db.imageDao().getImageById(subject?.image_url!!)?.image
+                if (image != null)
+                    imageView.setImageBitmap(image)
+            }
         }
     }
 

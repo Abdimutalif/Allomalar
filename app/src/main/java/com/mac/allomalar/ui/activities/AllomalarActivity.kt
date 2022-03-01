@@ -28,22 +28,6 @@ class AllomalarActivity : AppCompatActivity() {
         setContentView(binding.root)
         supportActionBar?.hide()
         setBottomNavGraph()
-  //      readDatabase()
-    }
-
-    private fun readDatabase() {
-        CoroutineScope(Dispatchers.Main).launch {
-            val centuries =viewModel.getAllCenturiesFromRoom()
-            if (centuries.isEmpty()){
-                Toast.makeText(
-                    this@AllomalarActivity,
-                    "Not yet implimented",
-                    Toast.LENGTH_SHORT
-                ).show()
-            }else{
-                Toast.makeText(this@AllomalarActivity, "This is database", Toast.LENGTH_SHORT).show()
-            }
-        }
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -53,8 +37,5 @@ class AllomalarActivity : AppCompatActivity() {
         var navController = findNavController(R.id.fragmentContainerView)
         val bottomNav = findViewById<BottomNavigationView>(R.id.bottom_navigation_view)
         bottomNav.setupWithNavController(navController)
-    }
-
-    companion object{
     }
 }

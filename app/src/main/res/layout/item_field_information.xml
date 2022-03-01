@@ -8,9 +8,9 @@
 
     <com.google.android.material.card.MaterialCardView
         android:layout_width="120dp"
-        android:layout_height="65dp"
+        android:layout_height="0dp"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="0dp"
         app:cardCornerRadius="6dp"
         app:cardElevation="8dp">
 
@@ -22,26 +22,44 @@
             android:src="@drawable/science" />
     </com.google.android.material.card.MaterialCardView>
 
-    <ImageView
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:src="@drawable/image_info_top2" />
+        android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/tv_information"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/image_info_middle"
-        android:gravity="center"
-        android:textColor="@color/black"
-        android:paddingHorizontal="16dp"
-        android:text="Nothing is available cdsljv dvknd dskvnsdkvndsklvnvnsdsnkdlvknv dvn dnds dnds"
-        android:textSize="20dp" />
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent">
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:src="@drawable/image_info_top2" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <TextView
+                    android:id="@+id/tv_information"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/image_info_middle"
+                    android:gravity="center"
+                    android:textColor="@color/black"
+                    android:paddingHorizontal="16dp"
+                    android:text="Nothing is available cdsljv dvknd dskvnsdkvndsklvnvnsdsnkdlvknv dvn dnds dnds"
+                    android:textSize="20dp" />
 
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:src="@drawable/image_info_bottom" />
+            </LinearLayout>
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:src="@drawable/image_info_bottom" />
+        </androidx.appcompat.widget.LinearLayoutCompat>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.appcompat.widget.LinearLayoutCompat>

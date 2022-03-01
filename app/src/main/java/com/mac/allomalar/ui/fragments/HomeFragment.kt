@@ -1,6 +1,7 @@
 package com.mac.allomalar.ui.fragments
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -18,7 +19,7 @@ import kotlinx.coroutines.*
 
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
-    private val TAG = "HomeFragment"
+    private val TAG = "HomeFragment1"
     private val homeViewModel: HomeFragmentViewModel by viewModels()
     private lateinit var binding: FragmentHomeBinding
     private lateinit var pagerAdapter: PagerAdapter
@@ -38,11 +39,11 @@ class HomeFragment : Fragment() {
         return binding.root
     }
 
-    private fun setData(){
+    private fun setData() {
         CoroutineScope(Dispatchers.Main).launch {
             val list1 = homeViewModel.getAllCenturiesFromRoom()
             list.clear()
-            list1.forEach{
+            list1.forEach {
                 val fragment = PagerFragment.getInstance(it)
                 list.add(fragment)
             }
@@ -61,6 +62,19 @@ class HomeFragment : Fragment() {
         )
         viewPager.adapter = pagerAdapter
         tab.setViewPager(viewPager)
+
     }
 
+    override fun onResume() {
+        super.onResume()
+       try {
+           var pos = binding.vp.currentItem
+           var tab = binding.dotsIndicator
+           tab.refreshDots()
+           tab.refreshDrawableState()
+           Log.d(TAG, "onResume: Refreshed" )
+       }catch (e: Exception){
+           Log.d(TAG, "onResume: oxshamadi")
+       }
+    }
 }

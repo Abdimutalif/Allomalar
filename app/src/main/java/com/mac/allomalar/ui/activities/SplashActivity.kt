@@ -14,6 +14,8 @@ import com.mac.allomalar.databinding.ActivitySplashBinding
 import com.mac.allomalar.models.Madrasa
 import com.mac.allomalar.models.MadrasaAndYears
 import com.mac.allomalar.models.Status
+import com.mac.allomalar.repository.Repository
+import com.mac.allomalar.utils.DownloadingService
 import com.mac.allomalar.utils.MyService
 import com.mac.allomalar.utils.NetworkHelper
 import com.mac.allomalar.utils.NetworkStateChangeReceiver
@@ -32,6 +34,7 @@ open class SplashActivity : AppCompatActivity(),
     @Inject
     lateinit var myService: MyService
 
+
     private var a = 0
     private var isFirst = true
     private val _go = MutableLiveData<Int>()
@@ -44,20 +47,24 @@ open class SplashActivity : AppCompatActivity(),
         super.onCreate(savedInstanceState)
         binding = ActivitySplashBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
         registerReceiver(
             NetworkStateChangeReceiver(),
             IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION)
         )
+        supportActionBar?.hide()
 
-        startService(Intent(this, MyService::class.java))
+    }
 
+    private fun startServiceFunction() {
+        Intent(this, DownloadingService::class.java).also {
+            startService(it)
+        }
     }
 
     private fun showMessage(isConnected: Boolean) {
 
         if (!isConnected) {
-            val messageToUser = "You are offline now." //TODO
+            val messageToUser = "Internet ulanmagan !" //TODO
             mSnackBar = Snackbar.make(
                 binding.root,
                 messageToUser,
@@ -67,17 +74,20 @@ open class SplashActivity : AppCompatActivity(),
             mSnackBar?.show()
 
             if (isFirst) {
-                val intent = Intent(this, AllomalarActivity::class.java)
-                startActivity(intent)
-                finish()
-                isFirst = false
+                  val intent = Intent(this, MapActivity::class.java)
+                  startActivity(intent)
+                  finish()
+                  isFirst = false
             }
         } else {
             mSnackBar?.dismiss()
-            binding.connecting.text = "Connecting"
+            binding.connecting.text = "Ulanmoqda..."
             if (isFirst) {
-                startWrite()
                 isFirst = false
+                CoroutineScope(Dispatchers.IO).launch {
+                    startServiceFunction()
+                }
+                startWrite()
             }
         }
     }
@@ -210,37 +220,12 @@ open class SplashActivity : AppCompatActivity(),
 
     }
 
-//    private fun writingMadrasaYears(data: List<Madrasa?>?) {
-//        var list = ArrayList<MadrasaAndYears>()
-//
-//        data?.forEach { it ->
-//            var isAvailable = false
-//            var pos = -1
-//            val madrasaAndYears = MadrasaAndYears()
-//            madrasaAndYears.name = it?.name
-//            for (i in 0 until list.size) {
-//                madrasaAndYears.name = list[i].name
-//                isAvailable = true
-//                pos = i
-//            }
-//            if (isAvailable) {
-//                list[pos].years?.add(it?.century_id!!)
-//            }else{
-//                madrasaAndYears.name = it?.name
-//                madrasaAndYears.years?.add(it?.century_id!!)
-//            }
-//        }
-//        uiScope.launch {
-//            viewModel.insertAllMadrasaAndYears(list)
-//        }
-//    }
-
     override fun onResume() {
         super.onResume()
         NetworkStateChangeReceiver.connectivityReceiverListener = this
         _go.observe(this) {
             if (a == 7) {
-                val intent = Intent(this, AllomalarActivity::class.java)
+                val intent = Intent(this, MapActivity::class.java)
                 startActivity(intent)
                 finish()
             }

@@ -7,7 +7,7 @@ import com.mac.allomalar.models.*
 import com.mac.allomalar.utils.Converters
 
 @Database(
-    entities = [AllomaAndSubjects::class, Alloma::class, Century::class, MadrasaAndAllomas::class, Madrasa::class, Subject::class, Book::class, Science::class, MadrasaAndYears::class],
+    entities = [AllomaAndSubjects::class, Alloma::class, Century::class, MadrasaAndAllomas::class, Madrasa::class, Subject::class, Book::class, Science::class, MadrasaAndYears::class, Image::class],
     version = 1
 )
 @TypeConverters(Converters::class)
@@ -22,6 +22,7 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun bookDao(): BookDao
     abstract fun scienceDao(): ScienceDao
     abstract fun madrasaAndYearsDao(): MadrasaAndYearsDao
+    abstract fun imageDao(): ImageDao
 
     companion object {
         @Volatile
@@ -35,7 +36,7 @@ abstract class AppDatabase : RoomDatabase() {
                 val instance = Room.databaseBuilder(
                     context.applicationContext,
                     AppDatabase::class.java,
-                    "db_6"
+                    "db_7"
                 )
                     .allowMainThreadQueries()
                     .build()

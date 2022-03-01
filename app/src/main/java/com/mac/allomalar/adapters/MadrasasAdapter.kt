@@ -25,16 +25,7 @@ class MadrasasAdapter(
             card.setOnClickListener {
                 onClick.onMadrasaClickListener(madrasa, position)
             }
-//            listPrevious?.let {
-//               it.forEach {
-//                    if (it?.name == madrasa?.name){
-//                        isAvailable = true
-//                    }
-//                }
-//            }
-//            if (isAvailable){
-//                card.setCardBackgroundColor(R.color.card_green!!)
-//            }
+
 
             card.findViewById<TextView>(R.id.tv_madrasa_name).text = madrasa.name
         }

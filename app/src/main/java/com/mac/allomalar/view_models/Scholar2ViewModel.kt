@@ -10,4 +10,6 @@ class Scholar2ViewModel @Inject constructor(
    private  val repository: Repository
 ): ViewModel(){
     suspend fun getAllSubjects(allomaId: Int) = repository.getAllSubjectsFromRoom(allomaId)
+    suspend fun getAllomaById(allomaId: Int) = repository.getAllomaFromRoom(allomaId)
+    suspend fun getImageById(allomaImage: String) = repository.getImageFromRoomById(allomaImage)
 }

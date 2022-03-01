@@ -28,7 +28,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:src="@drawable/literature"
-            android:layout_margin="13dp"/>
+            android:layout_margin="13dp"
+            android:scaleType="fitXY"/>
     </com.google.android.material.card.MaterialCardView>
 
     <TextView

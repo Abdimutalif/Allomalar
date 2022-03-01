@@ -25,7 +25,6 @@ private const val ARG_PARAM2 = "param2"
 
 @AndroidEntryPoint
 class PagerFragment(century: Century) : Fragment() {
-    private val TAG = "_Pager"
     private lateinit var binding: FragmentPagerBinding
     private val century = century
     private val viewModel: PagerFragmentViewModel by viewModels()
@@ -56,8 +55,6 @@ class PagerFragment(century: Century) : Fragment() {
             list1.forEach {
                 if (century.id == it.century_id)
                     list.add(it)
-//                if (century.id != 1 && it.century_id -1 == century.id)
-//                    listPre.add(it)
             }
             setAdapter(list, listPre)
         }
@@ -73,8 +70,7 @@ class PagerFragment(century: Century) : Fragment() {
         adapter =
             MadrasasAdapter(list!!, listPre, century, object : MadrasasAdapter.MadrasaSetOnClickListener {
                 override fun onMadrasaClickListener(madrasa: Madrasa, position: Int) {
-                    Toast.makeText(requireContext(), "clicked", Toast.LENGTH_SHORT).show()
-                    val bundle = Bundle()
+                   val bundle = Bundle()
                     bundle.putString("madrasa_name", madrasa.name)
                     bundle.putInt("madrasa_id", madrasa.id)
                     findNavController().navigate(R.id.action_fr_home_to_madrasaFragment, bundle)

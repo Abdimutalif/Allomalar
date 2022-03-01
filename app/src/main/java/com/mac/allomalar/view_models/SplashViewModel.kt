@@ -1,5 +1,7 @@
 package com.mac.allomalar.view_models
 
+import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -15,6 +17,7 @@ class SplashViewModel @Inject constructor(
     private val repository: Repository
 ) : ViewModel() {
 
+    private val TAG = "SplashViewModel"
     private val _allMadrasasLiveData = MutableLiveData<ResourceList<Madrasa>>()
     val allMadrasas: LiveData<ResourceList<Madrasa>>
         get() = _allMadrasasLiveData
@@ -72,116 +75,172 @@ class SplashViewModel @Inject constructor(
     suspend fun insertSubjects(list: List<Subject?>?) = repository.insertSubjectsAll(list)
     suspend fun insertAllBooks(list: List<Book?>?) = repository.insertBooks(list)
     suspend fun insertAllSciences(list: List<Science?>?) = repository.insertSciences(list)
-    suspend fun insertAllMadrasaAndYears(list: List<MadrasaAndYears?>?) = repository.insertMadrasasAndYears(list)
 
-    private fun getAllSciences() = viewModelScope.launch {
-        _allSciences.postValue(ResourceList.loading(null))
+    private fun getAllSciences() {
+      try {
+          viewModelScope.launch {
+              _allSciences.postValue(ResourceList.loading(null))
 
-        repository.getAllScience().let {
-            if (it.isSuccessful){
-                _allSciences.postValue(ResourceList.success(it.body()))
-            }else{
-                _allSciences.postValue(ResourceList.error(it.message(), null))
-            }
-        }
-    }
-
-    private fun getAllBooks() = viewModelScope.launch {
-        _allBooks.postValue(ResourceList.loading(null))
-
-        repository.getAllBooks().let {
-            if (it.isSuccessful){
-                _allBooks.postValue(ResourceList.success(it.body()))
-            }else{
-                _allBooks.postValue(ResourceList.error(it.message(), null))
-            }
-        }
-    }
-
-    private fun getAllSubjects()  = viewModelScope.launch {
-        var isShouldDo = true
-        var i = 1
-        while (isShouldDo) {
-            _allSubjectsInside.postValue(ResourceList.loading(null))
-            repository.getAllSubjectsOfAlloma(i).let {
-                if (it.isSuccessful) {
-                    _allSubjectsInside.postValue(ResourceList.success(it.body()))
-                  it.body()?.forEach {
-                      it.allomaId = i
-                      subjectList.add(it)
+              repository.getAllScience().let {
+                  if (it.isSuccessful) {
+                      _allSciences.postValue(ResourceList.success(it.body()))
+                  } else {
+                      _allSciences.postValue(ResourceList.error(it.message(), null))
                   }
-                    i++
-                } else {
-                    _allAllomasInside.postValue(Resource.error(it.errorBody().toString(), null))
-                    isShouldDo = false
-                }
-            }
-        }
-        _allSubjects.postValue(ResourceList.success(subjectList))
+              }
+          }
+      }catch (e: Exception){
+          Log.d(TAG, " Exception")
+      }
     }
 
-    private fun getEachAllomasInside() = viewModelScope.launch {
-        var isShouldDo = true
-        var i = 1
-        while (isShouldDo) {
-            _allAllomasInside.postValue(Resource.loading(null))
-            repository.getEachAlloma(i).let {
+    private fun getAllBooks() {
+        try {
+        viewModelScope.launch {
+            _allBooks.postValue(ResourceList.loading(null))
+
+            repository.getAllBooks().let {
                 if (it.isSuccessful) {
-                    _allAllomasInside.postValue(Resource.success(it.body()))
-                    allomaList.add(it.body()!!)
-                    i++
+                    _allBooks.postValue(ResourceList.success(it.body()))
                 } else {
-                    _allAllomasInside.postValue(Resource.error(it.errorBody().toString(), null))
-                    isShouldDo = false
+                    _allBooks.postValue(ResourceList.error(it.message(), null))
                 }
             }
         }
-        _allAllomas.postValue(ResourceList.success(allomaList))
+        }catch (e: Exception){
+            Log.d(TAG, "getAllBooks: Exception Books")
+        }
+
+    }
+    private fun getAllSubjects() {
+       try {
+           viewModelScope.launch {
+               var isShouldDo = true
+               var i = 1
+               while (isShouldDo) {
+                   _allSubjectsInside.postValue(ResourceList.loading(null))
+                   repository.getAllSubjectsOfAlloma(i).let {
+                       if (it.isSuccessful) {
+                           _allSubjectsInside.postValue(ResourceList.success(it.body()))
+                           it.body()?.forEach {
+                               it.allomaId = i
+                               subjectList.add(it)
+                           }
+                           i++
+                       } else {
+                           _allAllomasInside.postValue(
+                               Resource.error(
+                                   it.errorBody().toString(),
+                                   null
+                               )
+                           )
+                           isShouldDo = false
+                       }
+                   }
+               }
+               _allSubjects.postValue(ResourceList.success(subjectList))
+           }
+       }catch (e: Exception){
+           Log.d(TAG, "getAllSubjects: Subject")
+       }
+    }
+    private fun getEachAllomasInside() {
+       try {
+           viewModelScope.launch {
+               var isShouldDo = true
+               var i = 1
+               while (isShouldDo) {
+                   _allAllomasInside.postValue(Resource.loading(null))
+                   repository.getEachAlloma(i).let {
+                       if (it.isSuccessful) {
+                           _allAllomasInside.postValue(Resource.success(it.body()))
+                           allomaList.add(it.body()!!)
+                           i++
+                       } else {
+                           _allAllomasInside.postValue(
+                               Resource.error(
+                                   it.errorBody().toString(),
+                                   null
+                               )
+                           )
+                           isShouldDo = false
+                       }
+                   }
+               }
+               _allAllomas.postValue(ResourceList.success(allomaList))
+           }
+       }catch (e: Exception){
+           Log.d(TAG, "getEachAllomasInside: Alloma")
+       }
     }
 
 
-    private fun getMadrasaAndAllomas() = viewModelScope.launch {
-        _madrasaAndAllomasLiveData.postValue(ResourceList.loading(null))
-        repository.getMadrasaAndAllomas().let {
-            if (it.isSuccessful) {
-                _madrasaAndAllomasLiveData.postValue(ResourceList.success(it.body()))
-            } else {
-                _madrasaAndAllomasLiveData.postValue(
-                    ResourceList.error(
-                        it.errorBody().toString(),
-                        null
-                    )
-                )
+    private fun getMadrasaAndAllomas() {
+        try {
+            viewModelScope.launch {
+                _madrasaAndAllomasLiveData.postValue(ResourceList.loading(null))
+                repository.getMadrasaAndAllomas().let {
+                    if (it.isSuccessful) {
+                        _madrasaAndAllomasLiveData.postValue(ResourceList.success(it.body()))
+                    } else {
+                        _madrasaAndAllomasLiveData.postValue(
+                            ResourceList.error(
+                                it.errorBody().toString(),
+                                null
+                            )
+                        )
 
+                    }
+                }
             }
+        }catch (e: Exception){
+            Log.d(TAG, "getMadrasaAndAllomas: MANDA")
         }
     }
 
 
-    private fun getCenturies() = viewModelScope.launch {
-        _centuryLiveData.postValue(ResourceList.loading(null))
-        repository.getAllCenturies().let {
-            if (it.isSuccessful) {
-                _centuryLiveData.postValue(ResourceList.success(it.body()))
-            } else {
-                _centuryLiveData.postValue(ResourceList.error(it.errorBody().toString(), null))
-            }
-        }
+    private fun getCenturies() {
+       try {
+           viewModelScope.launch {
+               _centuryLiveData.postValue(ResourceList.loading(null))
+               repository.getAllCenturies().let {
+                   if (it.isSuccessful) {
+                       _centuryLiveData.postValue(ResourceList.success(it.body()))
+                   } else {
+                       _centuryLiveData.postValue(
+                           ResourceList.error(
+                               it.errorBody().toString(),
+                               null
+                           )
+                       )
+                   }
+               }
+           }
+       }catch (e: Exception){
+           Log.d(TAG, "getCenturies: century")
+       }
     }
 
-    private fun readAllMadrasa() = viewModelScope.launch {
-        _allMadrasasLiveData.postValue(ResourceList.loading(null))
-        repository.getAllMadrasas().let { respond ->
-            if (respond.isSuccessful) {
-                _allMadrasasLiveData.postValue(ResourceList.success(respond.body()))
-            } else {
-                _allMadrasasLiveData.postValue(
-                    ResourceList.error(
-                        respond.errorBody().toString(),
-                        null
-                    )
-                )
+    private fun readAllMadrasa() {
+        try {
+            viewModelScope.launch {
+                _allMadrasasLiveData.postValue(ResourceList.loading(null))
+                repository.getAllMadrasas().let { respond ->
+                    if (respond.isSuccessful) {
+                        _allMadrasasLiveData.postValue(ResourceList.success(respond.body()))
+                    } else {
+                        _allMadrasasLiveData.postValue(
+                            ResourceList.error(
+                                respond.errorBody().toString(),
+                                null
+                            )
+                        )
+                    }
+                }
             }
+        }catch (e: Exception){
+            Log.d(TAG, "readAllMadrasa: madrasas")
         }
+
     }
 }

@@ -1,17 +1,25 @@
 package com.mac.allomalar.adapters
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.card.MaterialCardView
 import com.mac.allomalar.R
+import com.mac.allomalar.db.database.AppDatabase
 import com.mac.allomalar.models.Alloma
 import com.mac.allomalar.models.Madrasa
 import com.mac.allomalar.models.MadrasaAndAllomas
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
-class ScholarsAdapter(var list: List<MadrasaAndAllomas>, var onItemScholarClick: OnItemScholarClick): RecyclerView.Adapter<ScholarsAdapter.ViewHolder>() {
+class ScholarsAdapter(val context: Context, var list: List<MadrasaAndAllomas>, var onItemScholarClick: OnItemScholarClick): RecyclerView.Adapter<ScholarsAdapter.ViewHolder>() {
+
+    private var db: AppDatabase = AppDatabase.getInstance(context)
 
     inner class ViewHolder(var view: View): RecyclerView.ViewHolder(view){
         fun onBind(madrasaAndAllomas: MadrasaAndAllomas?, position: Int){
@@ -25,6 +33,10 @@ class ScholarsAdapter(var list: List<MadrasaAndAllomas>, var onItemScholarClick:
                 it.name
             }
 
+            CoroutineScope(Dispatchers.Main).launch {
+                val imageView = view.findViewById<ImageView>(R.id.iv_image_of_scholar)
+                imageView.setImageBitmap(db.imageDao().getImageById(madrasaAndAllomas?.image_url!!)?.image)
+            }
         }
     }
 

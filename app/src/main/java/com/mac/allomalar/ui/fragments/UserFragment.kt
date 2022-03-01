@@ -18,6 +18,7 @@ import com.mac.allomalar.R
 import com.mac.allomalar.adapters.UserAdapter
 import com.mac.allomalar.databinding.FragmentUserBinding
 import com.mac.allomalar.models.Alloma
+import com.mac.allomalar.models.Image
 import com.mac.allomalar.view_models.UserViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_user.*
@@ -60,7 +61,6 @@ class UserFragment : Fragment() {
 
     private fun setClick(){
         binding.searchButton.setOnClickListener {
-            Toast.makeText(requireContext(), binding.etSearchAllomaByName.text, Toast.LENGTH_SHORT).show()
             search(binding.etSearchAllomaByName.text.toString())
         }
 
@@ -92,23 +92,21 @@ class UserFragment : Fragment() {
         list.forEach {
             if (it.name.toLowerCase().contains(part.toLowerCase())){
                 listSearch.add(it)
-                Toast.makeText(requireContext(), "Topildi", Toast.LENGTH_SHORT).show()
-            }
+           }
             setAdapter(listSearch)
         }
     }
 
     private fun setAdapter(list: List<Alloma>) {
-        adapter= UserAdapter(list, object:UserAdapter.OnItemUserClick{
+        adapter= UserAdapter(requireContext(), list, object:UserAdapter.OnItemUserClick{
 
             override fun onClick(alloma: Alloma?, position: Int) {
-                Toast.makeText(requireContext(),"User",Toast.LENGTH_LONG).show()
                 val bundle = Bundle()
                 bundle.putInt("alloma_id", alloma?.id!!)
                 findNavController().navigate(R.id.action_fr_user_to_scholar_1Fragment, bundle)
             }
-
         })
+
         binding.rvPlayer.adapter=adapter
     }
 

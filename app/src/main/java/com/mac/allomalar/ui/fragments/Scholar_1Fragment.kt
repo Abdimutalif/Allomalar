@@ -58,6 +58,7 @@ class Scholar_1Fragment : Fragment() {
             job.join()
             binding.tvName.text = alloma?.name
             binding.tvLifeYears.text = alloma?.birth_year
+            binding.ivScholarImage.setImageBitmap(viewModel.repository.getImageFromRoomById(alloma?.image_url!!)?.image)
         }
     }
 
