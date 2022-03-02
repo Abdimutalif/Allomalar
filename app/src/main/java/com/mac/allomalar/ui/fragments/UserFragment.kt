@@ -57,9 +57,10 @@ class UserFragment : Fragment(), NetworkStateChangeReceiver.ConnectivityReceiver
             IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION)
         )
         NetworkStateChangeReceiver.connectivityReceiverListener = this
-        if (!networkHelper.isNetworkConnected())
+        if (!networkHelper.isNetworkConnected()) {
             readAllomasFromRoom()
-        AllomalarActivity.isFirstTimeToEnterUserFragment = false
+            AllomalarActivity.isFirstTimeToEnterUserFragment = false
+        }
 
         return binding.root
     }
@@ -82,7 +83,7 @@ class UserFragment : Fragment(), NetworkStateChangeReceiver.ConnectivityReceiver
     override fun onResume() {
         super.onResume()
         binding.etSearchAllomaByName.setText("")
-        if (!AllomalarActivity.isFirstTimeToEnterUserFragment) {
+        if (networkHelper.isNetworkConnected()){
             readAllomasFromRoom()
         }
     }
@@ -145,7 +146,7 @@ class UserFragment : Fragment(), NetworkStateChangeReceiver.ConnectivityReceiver
                         var job2 = CoroutineScope(Dispatchers.Main).launch {
                             job.join()
                             readAllomasFromRoom()
-                            binding.progressBarPlayer.visibility = View.VISIBLE
+                            binding.progressBarPlayer.visibility = View.INVISIBLE
                             AllomalarActivity.isAllomasReadFromApi = true
                         }
                     }

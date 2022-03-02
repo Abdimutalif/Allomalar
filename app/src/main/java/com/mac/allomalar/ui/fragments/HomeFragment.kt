@@ -1,5 +1,6 @@
 package com.mac.allomalar.ui.fragments
 
+import android.content.Context
 import android.content.IntentFilter
 import android.net.ConnectivityManager
 import android.os.Bundle
@@ -29,7 +30,7 @@ class HomeFragment : Fragment(), NetworkStateChangeReceiver.ConnectivityReceiver
 
     @Inject
     lateinit var networkHelper: NetworkHelper
-
+    private val TAG = "HomeFragment0"
     private var a = 0
     private var isFirst = true
     private val _go = MutableLiveData<Int>()
@@ -58,20 +59,28 @@ class HomeFragment : Fragment(), NetworkStateChangeReceiver.ConnectivityReceiver
                 setData()
                 binding.progressHome.visibility = View.INVISIBLE
             }
+            AllomalarActivity.isFirstTimeToEnterHomeFragment = false
         }
-
+        AllomalarActivity.isFirstTimeToEnterHomeFragment = false
         return binding.root
+    }
+
+
+    override fun onResume() {
+        super.onResume()
+
+        if (networkHelper.isNetworkConnected() && !AllomalarActivity.isFirstTimeToEnterHomeFragment){
+            setData()
+        }
     }
 
     override fun onNetworkConnectionChanged(isConnected: Boolean) {
         if (isConnected && !AllomalarActivity.isAllMadrasasWrittenToRoom && AllomalarActivity.isFirstTimeToEnterHomeFragment) {
             binding.progressHome.visibility = View.VISIBLE
+            binding.vp.visibility = View.INVISIBLE
             startToReadAndWriteToRoom()
-        }else if (isConnected && AllomalarActivity.isAllMadrasasWrittenToRoom){
-            setData()
         }
     }
-
 
     private fun startToReadAndWriteToRoom() {
 
@@ -119,11 +128,11 @@ class HomeFragment : Fragment(), NetworkStateChangeReceiver.ConnectivityReceiver
                     AllomalarActivity.isFirstTimeToEnterHomeFragment = false
                     setData()
                     binding.progressHome.visibility = View.INVISIBLE
+                    binding.vp.visibility = View.VISIBLE
                 }
             }
         }
     }
-
 
     private fun setData() {
         CoroutineScope(Dispatchers.Main).launch {

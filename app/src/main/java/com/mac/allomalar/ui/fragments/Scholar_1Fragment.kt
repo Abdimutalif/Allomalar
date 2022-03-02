@@ -1,6 +1,7 @@
 package com.mac.allomalar.ui.fragments
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -58,8 +59,12 @@ class Scholar_1Fragment : Fragment() {
             job.join()
             binding.tvName.text = alloma?.name
             binding.tvLifeYears.text = alloma?.birth_year
-            binding.ivScholarImage.setImageBitmap(viewModel.repository.getImageFromRoomById(alloma?.image_url!!)?.image)
-        }
+           try {
+               binding.ivScholarImage.setImageBitmap(viewModel.repository.getImageFromRoomById(alloma?.image_url!!)?.image)
+           }catch (e: Exception){
+               Log.d("TAG", "setBindings: zaybal qivardin")
+           }
+             }
     }
 
     private fun setListeners() {

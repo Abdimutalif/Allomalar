@@ -1,6 +1,9 @@
 package com.mac.allomalar.ui.fragments
 
+import android.content.IntentFilter
+import android.net.ConnectivityManager
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -10,6 +13,9 @@ import com.mac.allomalar.adapters.WorldFondAdapter
 import com.mac.allomalar.databinding.FragmentWorldFondBinding
 import com.mac.allomalar.models.Book
 import com.mac.allomalar.models.Science
+import com.mac.allomalar.models.Status
+import com.mac.allomalar.ui.activities.AllomalarActivity
+import com.mac.allomalar.utils.NetworkStateChangeReceiver
 import com.mac.allomalar.view_models.WorldFondViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
@@ -21,7 +27,7 @@ private const val ARG_ALLOMA_ID = "alloma_id"
 private const val ARG_ALLOMA_NAME = "alloma_name"
 
 @AndroidEntryPoint
-class WorldFondFragment : Fragment() {
+class WorldFondFragment : Fragment(), NetworkStateChangeReceiver.ConnectivityReceiverListener {
     private lateinit var binding: FragmentWorldFondBinding
     private var allomaId: Int =-1
     private var allomaName:  String? = null
@@ -35,6 +41,11 @@ class WorldFondFragment : Fragment() {
             allomaId = it.getInt(ARG_ALLOMA_ID)
             allomaName = it.getString(ARG_ALLOMA_NAME)
         }
+        activity?.registerReceiver(
+            NetworkStateChangeReceiver(),
+            IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION)
+        )
+        NetworkStateChangeReceiver.connectivityReceiverListener = this
     }
 
     override fun onCreateView(
@@ -45,8 +56,12 @@ class WorldFondFragment : Fragment() {
         binding.toolBar.title = allomaName
 
         uiScope.launch {
-            binding.imageOfAlloma.setImageBitmap(viewModel.getImageById(viewModel.getAllomaById(allomaId).image_url)?.image)
+            try {
+                binding.imageOfAlloma.setImageBitmap(viewModel.getImageById(viewModel.getAllomaById(allomaId).image_url)?.image)
+        }catch (e: Exception){
+                Log.d("TAG", "onCreateView: ")
         }
+            }
 
         uiScope.launch {
            readAllScienceFromRoom()
@@ -54,6 +69,29 @@ class WorldFondFragment : Fragment() {
         return binding.root
     }
 
+    override fun onNetworkConnectionChanged(isConnected: Boolean) {
+        if (isConnected){
+            getAllSubjectFromApi()
+        }
+    }
+    private fun getAllSubjectFromApi(){
+        uiScope.async {
+            viewModel.allScience.observe(viewLifecycleOwner) { resource ->
+                when (resource.status) {
+                    Status.SUCCESS -> {
+                        val job = CoroutineScope(Dispatchers.Main).launch {
+                            viewModel.insertAllSciences(resource.data)
+                        }
+
+                        CoroutineScope(Dispatchers.Main).launch {
+                            job.join()
+                            readAllScienceFromRoom()
+                        }
+                    }
+                }
+            }
+        }
+    }
     private fun readAllScienceFromRoom() = uiScope.launch {
         val list = viewModel.getAllScienceFromRoom(allomaId)
         setAdapter(list)

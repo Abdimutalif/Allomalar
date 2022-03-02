@@ -41,14 +41,14 @@ class DownloadingService : Service() {
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         CoroutineScope(Dispatchers.IO).launch {
-//            try {
-//                for (i in 1..200) {
-//                    Log.d(TAG, "running: $i")
-//                    delay(1000)
-//                }
-//            } catch (e: Exception) {
-//                Log.d(TAG, "onStartCommand: ${e.message}")
-//            }
+            try {
+                for (i in 1..200) {
+                    Log.d(TAG, "running: $i")
+                    delay(1000)
+                }
+            } catch (e: Exception) {
+                Log.d(TAG, "onStartCommand: ${e.message}")
+            }
 
             readAllomasAndDownloadImages()
         }.start()

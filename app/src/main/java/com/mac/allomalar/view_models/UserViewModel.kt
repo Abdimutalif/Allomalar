@@ -32,7 +32,7 @@ class UserViewModel @Inject constructor(
     private val allomaList = ArrayList<Alloma>()
 
     init {
-        if (networkHelper.isNetworkConnected() && AllomalarActivity.isFirstTimeToEnterUserFragment && !AllomalarActivity.isAllomasReadFromApi)
+        if (networkHelper.isNetworkConnected() && !AllomalarActivity.isAllomasReadFromApi)
             getEachAllomasInside()
     }
 
