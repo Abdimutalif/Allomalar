@@ -147,22 +147,7 @@ open class SplashActivity : AppCompatActivity(),
             }
         }
 
-        uiScope.async {
-            viewModel.allAllomas.observe(this@SplashActivity) { resource ->
-                when (resource.status) {
-                    Status.SUCCESS -> {
-                        val job = CoroutineScope(Dispatchers.Main).launch {
-                            viewModel.insertAllomas(resource.data)
-                        }
-                        CoroutineScope(Dispatchers.Main).launch {
-                            job.join()
-                            a++
-                            _go.value = a
-                        }
-                    }
-                }
-            }
-        }
+
 
         uiScope.launch {
             viewModel.allSubjects.observe(this@SplashActivity) { resource ->

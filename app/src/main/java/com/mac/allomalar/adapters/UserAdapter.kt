@@ -19,7 +19,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class UserAdapter(var context: Context, val list: List<Alloma>, var onItemUserClick: OnItemUserClick) :
+class UserAdapter(var context: Context, val list: ArrayList<Alloma>, var onItemUserClick: OnItemUserClick) :
     RecyclerView.Adapter<UserAdapter.ViewHolder>() {
 
     private var db: AppDatabase = AppDatabase.getInstance(context)

@@ -22,6 +22,14 @@ class AllomalarActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAllomalarBinding
     private val viewModel: AllomalarViewModel by viewModels()
 
+    companion object {
+        var isFirstTimeToEnterUserFragment = true
+        var isAllomasReadFromApi = false
+        var isFirstTimeToEnterHomeFragment = true
+        var isCenturiesAreWrittenToRoom= false
+        var isAllMadrasasWrittenToRoom = false
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityAllomalarBinding.inflate(layoutInflater)
@@ -31,8 +39,9 @@ class AllomalarActivity : AppCompatActivity() {
     }
 
     override fun onSupportNavigateUp(): Boolean {
-        return Navigation.findNavController(this,R.id.fragmentContainerView).navigateUp()
+        return Navigation.findNavController(this, R.id.fragmentContainerView).navigateUp()
     }
+
     private fun setBottomNavGraph() {
         var navController = findNavController(R.id.fragmentContainerView)
         val bottomNav = findViewById<BottomNavigationView>(R.id.bottom_navigation_view)

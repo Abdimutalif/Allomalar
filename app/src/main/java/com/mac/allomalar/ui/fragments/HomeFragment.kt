@@ -1,5 +1,7 @@
 package com.mac.allomalar.ui.fragments
 
+import android.content.IntentFilter
+import android.net.ConnectivityManager
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -9,18 +11,29 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.FragmentPagerAdapter
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.MutableLiveData
 import com.mac.allomalar.adapters.PagerAdapter
 import com.mac.allomalar.databinding.FragmentHomeBinding
 import com.mac.allomalar.models.Status
+import com.mac.allomalar.ui.activities.AllomalarActivity
+import com.mac.allomalar.utils.NetworkHelper
+import com.mac.allomalar.utils.NetworkStateChangeReceiver
 import com.mac.allomalar.view_models.HomeFragmentViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.coroutines.*
+import javax.inject.Inject
 
 @AndroidEntryPoint
-class HomeFragment : Fragment() {
-    private val TAG = "HomeFragment1"
-    private val homeViewModel: HomeFragmentViewModel by viewModels()
+class HomeFragment : Fragment(), NetworkStateChangeReceiver.ConnectivityReceiverListener {
+
+    @Inject
+    lateinit var networkHelper: NetworkHelper
+
+    private var a = 0
+    private var isFirst = true
+    private val _go = MutableLiveData<Int>()
+    private val viewModel: HomeFragmentViewModel by viewModels()
     private lateinit var binding: FragmentHomeBinding
     private lateinit var pagerAdapter: PagerAdapter
     val list = ArrayList<PagerFragment>()
@@ -33,15 +46,88 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentHomeBinding.inflate(inflater)
-        uiScope.launch {
-            setData()
+
+        activity?.registerReceiver(
+            NetworkStateChangeReceiver(),
+            IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION)
+        )
+        NetworkStateChangeReceiver.connectivityReceiverListener = this
+
+        if (!networkHelper.isNetworkConnected()) {
+            uiScope.launch {
+                setData()
+                binding.progressHome.visibility = View.INVISIBLE
+            }
         }
+
         return binding.root
     }
 
+    override fun onNetworkConnectionChanged(isConnected: Boolean) {
+        if (isConnected && !AllomalarActivity.isAllMadrasasWrittenToRoom && AllomalarActivity.isFirstTimeToEnterHomeFragment) {
+            binding.progressHome.visibility = View.VISIBLE
+            startToReadAndWriteToRoom()
+        }else if (isConnected && AllomalarActivity.isAllMadrasasWrittenToRoom){
+            setData()
+        }
+    }
+
+
+    private fun startToReadAndWriteToRoom() {
+
+        uiScope.launch {
+            viewModel.allMadrasas.observe(viewLifecycleOwner) { resource ->
+                when (resource.status) {
+                    Status.SUCCESS -> {
+                        var job = CoroutineScope(Dispatchers.Main).launch {
+                            viewModel.insertAllMadrasa(resource.data)
+                        }
+                        CoroutineScope(Dispatchers.Main).launch {
+                            job.join()
+                            a++
+                            _go.value = a
+                        }
+                    }
+                }
+            }
+        }
+
+        uiScope.async {
+            viewModel.allCenturies.observe(viewLifecycleOwner) { resource ->
+                when (resource.status) {
+                    Status.SUCCESS -> {
+                        val job = CoroutineScope(Dispatchers.Main).launch {
+                            viewModel.insertAllCenturies(resource.data)
+                        }
+
+                        CoroutineScope(Dispatchers.Main).launch {
+                            job.join()
+                            a++
+                            _go.value = a
+                        }
+                    }
+
+                }
+            }
+        }
+
+        uiScope.async {
+            _go.observe(viewLifecycleOwner) {
+                if (it == 2) {
+                    AllomalarActivity.isCenturiesAreWrittenToRoom = true
+                    AllomalarActivity.isAllMadrasasWrittenToRoom = true
+                    AllomalarActivity.isFirstTimeToEnterHomeFragment = false
+                    setData()
+                    binding.progressHome.visibility = View.INVISIBLE
+                }
+            }
+        }
+    }
+
+
     private fun setData() {
         CoroutineScope(Dispatchers.Main).launch {
-            val list1 = homeViewModel.getAllCenturiesFromRoom()
+            val list1 = viewModel.getAllCenturiesFromRoom()
             list.clear()
             list1.forEach {
                 val fragment = PagerFragment.getInstance(it)
@@ -65,16 +151,5 @@ class HomeFragment : Fragment() {
 
     }
 
-    override fun onResume() {
-        super.onResume()
-       try {
-           var pos = binding.vp.currentItem
-           var tab = binding.dotsIndicator
-           tab.refreshDots()
-           tab.refreshDrawableState()
-           Log.d(TAG, "onResume: Refreshed" )
-       }catch (e: Exception){
-           Log.d(TAG, "onResume: oxshamadi")
-       }
-    }
+
 }
