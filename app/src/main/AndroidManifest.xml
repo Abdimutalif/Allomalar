@@ -25,11 +25,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".ui.activities.SplashActivity"
-            android:exported="true"
-            android:screenOrientation="portrait">
-        </activity>
+
         <activity
             android:name=".ui.activities.AllomalarActivity"
             android:exported="true"
