@@ -19,7 +19,11 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class UserAdapter(var context: Context, val list: ArrayList<Alloma>, var onItemUserClick: OnItemUserClick) :
+class UserAdapter(
+    var context: Context,
+    val list: ArrayList<Alloma>,
+    var onItemUserClick: OnItemUserClick
+) :
     RecyclerView.Adapter<UserAdapter.ViewHolder>() {
 
     private var db: AppDatabase = AppDatabase.getInstance(context)
@@ -31,10 +35,17 @@ class UserAdapter(var context: Context, val list: ArrayList<Alloma>, var onItemU
             card.setOnClickListener {
                 onItemUserClick.onClick(alloma, position)
             }
-            var tv = view.findViewById<TextView>(R.id.tv_scholar_name)
+
+            val tv = view.findViewById<TextView>(R.id.tv_scholar_name)
             tv.text = alloma?.name
+
             CoroutineScope(Dispatchers.Main).launch {
-                imageView.setImageBitmap(db.imageDao().getImageById(alloma?.image_url!!)?.image)
+                var image = db.imageDao().getImageById(alloma?.image_url!!)?.image
+                if (image == null) {
+                    imageView.setImageResource(R.drawable.old_me)
+                } else {
+                    imageView.setImageBitmap(image)
+                }
             }
         }
     }

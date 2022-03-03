@@ -40,6 +40,8 @@ class AllomalarActivity : AppCompatActivity(), NetworkStateChangeReceiver.Connec
         var isFirstTimeToEnterScholar2Fragment= true
         var isFirstTimeToEnterBooksFragment= true
         var isFirstTimeToEnterSciencesFragment= true
+        var isFirstTimeToEnterFieldInformationFragment= true
+        var isdownloaded = false
 
     }
 
@@ -61,6 +63,7 @@ class AllomalarActivity : AppCompatActivity(), NetworkStateChangeReceiver.Connec
         return Navigation.findNavController(this, R.id.fragmentContainerView).navigateUp()
     }
 
+
     private fun startServiceFunction() {
         Intent(this, DownloadingService::class.java).also {
             startService(it)
@@ -75,7 +78,9 @@ class AllomalarActivity : AppCompatActivity(), NetworkStateChangeReceiver.Connec
 
     override fun onNetworkConnectionChanged(isConnected: Boolean) {
         if (isConnected) {
-            startServiceFunction()
+            CoroutineScope(Dispatchers.IO).launch {
+                startServiceFunction()
+            }
         }
     }
 }

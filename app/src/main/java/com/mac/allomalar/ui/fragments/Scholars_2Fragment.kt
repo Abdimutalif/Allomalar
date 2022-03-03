@@ -39,7 +39,11 @@ class Scholars_2Fragment : Fragment(), NetworkStateChangeReceiver.ConnectivityRe
     private lateinit var binding: FragmentScholars2Binding
     private val viewModel: Scholar2ViewModel by viewModels()
     private val uiScope = CoroutineScope(Dispatchers.Main)
-    private lateinit var list: List<Subject>
+    private lateinit var list: List<Subject?>
+    private var isOnly = true
+    private var firstResume = false
+    private var finishReadingFromApi = false
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,7 +56,6 @@ class Scholars_2Fragment : Fragment(), NetworkStateChangeReceiver.ConnectivityRe
         arguments?.let {
             allomaId = it.getInt(ARG_ALLOMA_ID)
         }
-        viewModel.getAllSubjectsInside(allomaId)
         list = ArrayList()
     }
 
@@ -62,49 +65,64 @@ class Scholars_2Fragment : Fragment(), NetworkStateChangeReceiver.ConnectivityRe
     ): View? {
         binding = FragmentScholars2Binding.inflate(layoutInflater)
 
-        if (!networkHelper.isNetworkConnected()){
+        if (!networkHelper.isNetworkConnected()) {
             readSubjects()
             readAlloma(allomaId)
+            AllomalarActivity.isFirstTimeToEnterUserFragment = false
         }
-        AllomalarActivity.isFirstTimeToEnterUserFragment = false
 
         return binding.root
     }
 
     override fun onResume() {
         super.onResume()
-        if (networkHelper.isNetworkConnected()){
+        if (networkHelper.isNetworkConnected() && firstResume) {
             readSubjects()
             readAlloma(allomaId)
         }
+        firstResume = true
     }
+
     override fun onNetworkConnectionChanged(isConnected: Boolean) {
-       if (isConnected && AllomalarActivity.isFirstTimeToEnterScholar2Fragment ){
-           /**
-            * && !AllomalarActivity.isSubjectsAreWrittenToRoom
-            * */
-          readAllSubject()
-          binding.progressScholar2.visibility = View.VISIBLE
+        if (isConnected && !finishReadingFromApi) {
+            try {
+                try {
+                    viewModel.getAllSubjectsInside(allomaId)
+                    readAllSubject()
+                } catch (e: Exception) {
+                }
+                binding.progressScholar2.visibility = View.VISIBLE
+            } catch (e: Exception) {
+            }
+
+        } else if (isConnected && finishReadingFromApi) {
+            readSubjects()
+            readAlloma(allomaId)
         }
     }
 
     private fun readAllSubject() {
         uiScope.launch {
-            viewModel.allSubjects.observe(viewLifecycleOwner) { resource ->
-                when (resource.status) {
-                    Status.SUCCESS -> {
-                        val job = CoroutineScope(Dispatchers.Main).launch {
-                            viewModel.insertSubjects(resource.data)
-                        }
+            try {
+                viewModel.allSubjects.observe(viewLifecycleOwner) { resource ->
+                    when (resource.status) {
+                        Status.SUCCESS -> {
+                            val job = CoroutineScope(Dispatchers.Main).launch {
+                                viewModel.insertSubjects(resource.data)
+                            }
 
-                        CoroutineScope(Dispatchers.Main).launch {
-                            job.join()
-                            readSubjects()
-                            readAlloma(allomaId)
-                            binding.progressScholar2.visibility = View.INVISIBLE
+                            CoroutineScope(Dispatchers.Main).launch {
+                                binding.progressScholar2.visibility = View.INVISIBLE
+                                job.join()
+                                readSubjects()
+                                finishReadingFromApi = true
+                                readAlloma(allomaId)
+
+                            }
                         }
                     }
                 }
+            } catch (e: Exception) {
             }
         }
     }
@@ -114,10 +132,15 @@ class Scholars_2Fragment : Fragment(), NetworkStateChangeReceiver.ConnectivityRe
         uiScope.launch {
             var alloma = viewModel.getAllomaById(allomaID)
             try {
-            (alloma.name + "\n" + alloma.birth_year).also { binding.tvScholarName.text = it }
-            val image =viewModel.getImageById(alloma.image_url)
-                binding.ivScholar.setImageBitmap(image?.image)
-            }catch (e:Exception){
+                (alloma.name + "\n" + alloma.birth_year).also { binding.tvScholarName.text = it }
+                val image = viewModel.getImageById(alloma.image_url)
+                if (image == null) {
+                    binding.ivScholar.setImageResource(R.drawable.old_me)
+                } else {
+                    binding.ivScholar.setImageBitmap(image?.image)
+                }
+
+            } catch (e: Exception) {
                 Log.d("TAG", "readAlloma: xatolik rasm bilan")
             }
         }
@@ -125,17 +148,26 @@ class Scholars_2Fragment : Fragment(), NetworkStateChangeReceiver.ConnectivityRe
 
     private fun readSubjects() = uiScope.launch {
         list = viewModel.getAllSubjects(allomaId)
+//        if (list.isEmpty()){
+//            Toast.makeText(requireContext(), "Ma'lumot yo'q", Toast.LENGTH_SHORT).show()
+//        }
         setAdapter(list)
     }
 
-    private fun setAdapter(list: List<Subject>) {
+    private fun setAdapter(list: List<Subject?>) {
         fieldsAdapter = FieldsAdapter(requireContext(), list, object : FieldsAdapter.OnFieldClick {
             override fun onClick(subject: Subject?, position: Int) {
-                findNavController().navigate(R.id.action_scholars_2Fragment_to_fieldInformationFragment)
+                val bundle = Bundle()
+                bundle.putInt("alloma_id", allomaId)
+                bundle.putInt("field_id", subject?.id!!)
+                bundle.putString("field_name", subject.name)
+
+                findNavController().navigate(
+                    R.id.action_scholars_2Fragment_to_fieldInformationFragment,
+                    bundle
+                )
             }
         })
         binding.rv.adapter = fieldsAdapter
     }
-
-
 }

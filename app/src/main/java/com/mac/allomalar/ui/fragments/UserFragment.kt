@@ -6,6 +6,7 @@ import android.net.ConnectivityManager
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
@@ -32,7 +33,7 @@ import kotlinx.android.synthetic.main.fragment_user.*
 import kotlinx.coroutines.*
 import javax.inject.Inject
 
-
+private const val TAG = "UserFragment0"
 
 @AndroidEntryPoint
 class UserFragment : Fragment(), NetworkStateChangeReceiver.ConnectivityReceiverListener {
@@ -46,6 +47,9 @@ class UserFragment : Fragment(), NetworkStateChangeReceiver.ConnectivityReceiver
     private val viewModel: UserViewModel by viewModels()
     private val uiScope = CoroutineScope(Dispatchers.Main)
     private val uiScopeIO = CoroutineScope(Dispatchers.IO)
+    private var isFirstTime = true
+    private var isReadFromRoom = false
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -57,19 +61,24 @@ class UserFragment : Fragment(), NetworkStateChangeReceiver.ConnectivityReceiver
             IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION)
         )
         NetworkStateChangeReceiver.connectivityReceiverListener = this
+
         if (!networkHelper.isNetworkConnected()) {
             readAllomasFromRoom()
-            AllomalarActivity.isFirstTimeToEnterUserFragment = false
+        } else if (networkHelper.isNetworkConnected() && AllomalarActivity.isdownloaded) {
+            readAllomasFromRoom()
         }
-
+        Log.d(TAG, "onCreateView: check")
         return binding.root
     }
 
     override fun onNetworkConnectionChanged(isConnected: Boolean) {
         if (isConnected && AllomalarActivity.isFirstTimeToEnterUserFragment && !AllomalarActivity.isAllomasReadFromApi) {
             Toast.makeText(requireContext(), "Internetga ulanmoqda...", Toast.LENGTH_SHORT).show()
-            downloadAllAllomas()
-            binding.progressBarPlayer.visibility = View.VISIBLE
+            if (!isReadFromRoom) {
+                binding.progressBarPlayer.visibility = View.VISIBLE
+                downloadAllAllomas()
+            }
+            AllomalarActivity.isFirstTimeToEnterUserFragment = false
         }
     }
 
@@ -77,15 +86,14 @@ class UserFragment : Fragment(), NetworkStateChangeReceiver.ConnectivityReceiver
         list.clear()
         list.addAll(viewModel.getAllAllomasFromRoom())
         setAdapter(list)
+        if (list.isNotEmpty())
+            isReadFromRoom = true
         setClick()
     }
 
     override fun onResume() {
         super.onResume()
         binding.etSearchAllomaByName.setText("")
-        if (networkHelper.isNetworkConnected()){
-            readAllomasFromRoom()
-        }
     }
 
     private fun setAdapter(list: ArrayList<Alloma>) {
@@ -148,6 +156,8 @@ class UserFragment : Fragment(), NetworkStateChangeReceiver.ConnectivityReceiver
                             readAllomasFromRoom()
                             binding.progressBarPlayer.visibility = View.INVISIBLE
                             AllomalarActivity.isAllomasReadFromApi = true
+                            AllomalarActivity.isFirstTimeToEnterUserFragment = false
+                            AllomalarActivity.isdownloaded = true
                         }
                     }
                 }

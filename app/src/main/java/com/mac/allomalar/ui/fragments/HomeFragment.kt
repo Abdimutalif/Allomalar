@@ -17,6 +17,7 @@ import com.mac.allomalar.adapters.PagerAdapter
 import com.mac.allomalar.databinding.FragmentHomeBinding
 import com.mac.allomalar.models.Status
 import com.mac.allomalar.ui.activities.AllomalarActivity
+import com.mac.allomalar.ui.activities.AllomalarActivity.Companion.isAllMadrasasWrittenToRoom
 import com.mac.allomalar.utils.NetworkHelper
 import com.mac.allomalar.utils.NetworkStateChangeReceiver
 import com.mac.allomalar.view_models.HomeFragmentViewModel
@@ -58,24 +59,28 @@ class HomeFragment : Fragment(), NetworkStateChangeReceiver.ConnectivityReceiver
             uiScope.launch {
                 setData()
                 binding.progressHome.visibility = View.INVISIBLE
+                AllomalarActivity.isFirstTimeToEnterHomeFragment = false
             }
-            AllomalarActivity.isFirstTimeToEnterHomeFragment = false
+
+        } else if(networkHelper.isNetworkConnected() && !isAllMadrasasWrittenToRoom && !isAllMadrasasWrittenToRoom){
+            binding.progressHome.visibility = View.VISIBLE
+            binding.vp.visibility = View.INVISIBLE
+            startToReadAndWriteToRoom()
         }
-        AllomalarActivity.isFirstTimeToEnterHomeFragment = false
+
         return binding.root
     }
 
 
     override fun onResume() {
         super.onResume()
-
         if (networkHelper.isNetworkConnected() && !AllomalarActivity.isFirstTimeToEnterHomeFragment){
             setData()
         }
     }
 
     override fun onNetworkConnectionChanged(isConnected: Boolean) {
-        if (isConnected && !AllomalarActivity.isAllMadrasasWrittenToRoom && AllomalarActivity.isFirstTimeToEnterHomeFragment) {
+        if (isConnected && !isAllMadrasasWrittenToRoom && !isAllMadrasasWrittenToRoom) {
             binding.progressHome.visibility = View.VISIBLE
             binding.vp.visibility = View.INVISIBLE
             startToReadAndWriteToRoom()

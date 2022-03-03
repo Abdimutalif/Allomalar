@@ -31,9 +31,6 @@ open class SplashActivity : AppCompatActivity(),
     @Inject
     lateinit var networkHelper: NetworkHelper
 
-    @Inject
-    lateinit var myService: MyService
-
 
     private var a = 0
     private var isFirst = true
@@ -85,7 +82,7 @@ open class SplashActivity : AppCompatActivity(),
             if (isFirst) {
                 isFirst = false
                 CoroutineScope(Dispatchers.IO).launch {
-                    startServiceFunction()
+       //             startServiceFunction()
                 }
                 startWrite()
             }

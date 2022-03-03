@@ -27,7 +27,8 @@ import javax.inject.Inject
 private const val ARG_PARAM = "alloma_id"
 
 @AndroidEntryPoint
-class ScientificWorksFragment : Fragment(), NetworkStateChangeReceiver.ConnectivityReceiverListener {
+class ScientificWorksFragment : Fragment(),
+    NetworkStateChangeReceiver.ConnectivityReceiverListener {
 
     @Inject
     lateinit var networkHelper: NetworkHelper
@@ -36,9 +37,10 @@ class ScientificWorksFragment : Fragment(), NetworkStateChangeReceiver.Connectiv
     private lateinit var binding: FragmentScientificWorksBinding
     private lateinit var adapter: ScientificWorksAdapter
     private val viewModel: ScientificWorksViewModel by viewModels()
-    private val list: ArrayList<Book>  = ArrayList()
+    private val list: ArrayList<Book> = ArrayList()
     private val job = Job()
     private val uiScope = CoroutineScope(Dispatchers.Main + job)
+    private var isOnly = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,15 +60,21 @@ class ScientificWorksFragment : Fragment(), NetworkStateChangeReceiver.Connectiv
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentScientificWorksBinding.inflate(layoutInflater)
+
+        if (!networkHelper.isNetworkConnected()){
             uiScope.launch {
                 getBooksFromRoom()
             }
-            AllomalarActivity.isFirstTimeToEnterBooksFragment = false
+        }
+        AllomalarActivity.isFirstTimeToEnterBooksFragment = false
         return binding.root
     }
 
     override fun onNetworkConnectionChanged(isConnected: Boolean) {
-        if (isConnected && AllomalarActivity.isFirstTimeToEnterBooksFragment && !AllomalarActivity.isBooksAreWrittenToRoom ){
+        if (isConnected && isOnly) {
+            /**
+             * && AllomalarActivity.isFirstTimeToEnterBooksFragment && !AllomalarActivity.isBooksAreWrittenToRoom
+            * */
             readFromApi()
             binding.progressScholar2.visibility = View.VISIBLE
         }
@@ -84,7 +92,8 @@ class ScientificWorksFragment : Fragment(), NetworkStateChangeReceiver.Connectiv
                         CoroutineScope(Dispatchers.Main).launch {
                             job.join()
                             getBooksFromRoom()
-                            AllomalarActivity.isBooksAreWrittenToRoom = true
+                            isOnly = false
+//                            AllomalarActivity.isBooksAreWrittenToRoom = true
                             binding.progressScholar2.visibility = View.INVISIBLE
                         }
                     }
@@ -102,7 +111,4 @@ class ScientificWorksFragment : Fragment(), NetworkStateChangeReceiver.Connectiv
         adapter = ScientificWorksAdapter(list)
         binding.rv.adapter = adapter
     }
-
-
-
 }

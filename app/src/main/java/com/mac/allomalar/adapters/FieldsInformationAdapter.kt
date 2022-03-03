@@ -4,15 +4,18 @@ import android.provider.CalendarContract
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.card.MaterialCardView
 import com.mac.allomalar.R
+import com.mac.allomalar.models.SubjectInfo
 
-class FieldsInformationAdapter(var list: List<Any>) : RecyclerView.Adapter<FieldsInformationAdapter.ViewHolder>() {
+class FieldsInformationAdapter(var list: List<SubjectInfo>) : RecyclerView.Adapter<FieldsInformationAdapter.ViewHolder>() {
 
     inner class ViewHolder(var view: View) : RecyclerView.ViewHolder(view) {
-        fun onBind(item: Any?, position: Int ){
-
+        fun onBind(subjectInfo: SubjectInfo?, position: Int ){
+            var tv = view.findViewById<TextView>(R.id.tv_information_last)
+            tv.text = subjectInfo?.text
         }
     }
 
@@ -22,7 +25,7 @@ class FieldsInformationAdapter(var list: List<Any>) : RecyclerView.Adapter<Field
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.onBind(null, position)
+        holder.onBind(list[position], position)
     }
 
     override fun getItemCount(): Int = list.size

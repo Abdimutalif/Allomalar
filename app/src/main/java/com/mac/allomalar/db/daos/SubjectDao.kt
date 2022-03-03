@@ -14,7 +14,7 @@ import com.mac.allomalar.models.Subject
 interface SubjectDao {
 
     @Query("Select*from subjects where allomaId =:id")
-    suspend fun getSubjects(id: Int): List<Subject>
+    suspend fun getSubjects(id: Int): List<Subject?>
 
     @Insert
     suspend fun insertSubject(subject: Subject)

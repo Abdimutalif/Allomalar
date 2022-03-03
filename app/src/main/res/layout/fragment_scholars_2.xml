@@ -43,7 +43,6 @@
                     android:layout_marginLeft="40dp"
                     android:layout_marginTop="15dp"
                     android:contentDescription="TODO"
-                    android:src="@drawable/ibn_sino_image"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintHorizontal_bias="0"
                     app:layout_constraintLeft_toLeftOf="parent"

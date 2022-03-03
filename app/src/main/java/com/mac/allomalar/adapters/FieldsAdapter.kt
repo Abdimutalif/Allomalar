@@ -18,7 +18,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class FieldsAdapter(var context: Context, var list: List<Subject>, var onFieldClick: OnFieldClick) :
+class FieldsAdapter(var context: Context, var list: List<Subject?>, var onFieldClick: OnFieldClick) :
     RecyclerView.Adapter<FieldsAdapter.ViewHolder>() {
 
     private var db = AppDatabase.getInstance(context)
@@ -46,7 +46,7 @@ class FieldsAdapter(var context: Context, var list: List<Subject>, var onFieldCl
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.onBind(list[position], position)
+        holder.onBind(list?.get(position), position)
     }
 
     override fun getItemCount(): Int = list.size
