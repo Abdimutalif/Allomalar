@@ -28,4 +28,7 @@ interface ApiService {
 
     @GET("science")
     suspend fun getScience(): Response<List<Science>>
+
+    @GET("alloma/subject/{id}/subject-info/")
+    suspend fun getSubjectInfo(@Path("id") id: Int): Response<List<SubjectInfo>>
 }

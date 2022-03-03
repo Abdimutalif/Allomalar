@@ -1,6 +1,7 @@
 package com.mac.allomalar.ui.fragments
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -53,12 +54,24 @@ class Scholar_1Fragment : Fragment() {
         val job = uiScope.launch {
             alloma = viewModel.getAlloma(allomaID)
         }
-        
+
         uiScope.launch {
             job.join()
             binding.tvName.text = alloma?.name
             binding.tvLifeYears.text = alloma?.birth_year
-            binding.ivScholarImage.setImageBitmap(viewModel.repository.getImageFromRoomById(alloma?.image_url!!)?.image)
+            try {
+                var image = viewModel.repository.getImageFromRoomById(
+                    alloma?.image_url!!
+                )?.image
+
+                if (image == null) {
+                    binding.ivScholarImage.setImageResource(R.drawable.old_me)
+                } else {
+                    binding.ivScholarImage.setImageBitmap(image)
+                }
+            } catch (e: Exception) {
+                Log.d("TAG", "setBindings: zaybal qivardin")
+            }
         }
     }
 
@@ -90,7 +103,7 @@ class Scholar_1Fragment : Fragment() {
     }
 
     private fun navigate1() {
-       val bundle = Bundle()
+        val bundle = Bundle()
         bundle.putInt("alloma_id", allomaID)
         findNavController().navigate(R.id.action_scholar_1Fragment_to_scholars_2Fragment, bundle)
     }
@@ -98,7 +111,10 @@ class Scholar_1Fragment : Fragment() {
     private fun navigate2() {
         val bundle = Bundle()
         bundle.putInt("alloma_id", allomaID)
-        findNavController().navigate(R.id.action_scholar_1Fragment_to_scientificWorksFragment, bundle)
+        findNavController().navigate(
+            R.id.action_scholar_1Fragment_to_scientificWorksFragment,
+            bundle
+        )
     }
 
     private fun navigate3() {

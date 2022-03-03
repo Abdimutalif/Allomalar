@@ -8,44 +8,44 @@ import androidx.lifecycle.viewModelScope
 import com.mac.allomalar.models.Resource
 import com.mac.allomalar.models.ResourceList
 import com.mac.allomalar.models.Subject
+import com.mac.allomalar.models.SubjectInfo
 import com.mac.allomalar.repository.Repository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class Scholar2ViewModel @Inject constructor(
+class FieldInformationViewModel @Inject constructor(
     private val repository: Repository
 ) : ViewModel() {
-    private val _allSubjects = MutableLiveData<ResourceList<Subject>>()
-    val allSubjects: LiveData<ResourceList<Subject>>
-        get() = _allSubjects
+    private val _allSubjectsInformation = MutableLiveData<ResourceList<SubjectInfo>>()
+    val allSubjectsInfo: LiveData<ResourceList<SubjectInfo>>
+        get() = _allSubjectsInformation
 
-    private val _allSubjectsInside = MutableLiveData<ResourceList<Subject>>()
-    private val allSubjectsInside: LiveData<ResourceList<Subject>>
-        get() = _allSubjectsInside
+    private val _allSubjectsInformationInside = MutableLiveData<ResourceList<SubjectInfo>>()
+    private val allSubjectsInside: LiveData<ResourceList<SubjectInfo>>
+        get() = _allSubjectsInformationInside
 
-    private val subjectList = ArrayList<Subject>()
+    private val subjectList = ArrayList<SubjectInfo>()
 
 
-    suspend fun getAllSubjects(allomaId: Int) = repository.getAllSubjectsFromRoom(allomaId)
+    suspend fun getAllSubjectsInfo(subjectId: Int) = repository.getAllSubjectInfoFromRoom( subjectId)
     suspend fun getAllomaById(allomaId: Int) = repository.getAllomaFromRoom(allomaId)
     suspend fun getImageById(allomaImage: String) = repository.getImageFromRoomById(allomaImage)
-    suspend fun insertSubjects(list: List<Subject?>?) = repository.insertSubjectsAll(list)
+    suspend fun insertSubjectInfo(list: List<SubjectInfo?>?) = repository.insertSubjectInfoAll(list)
 
     fun getAllSubjectsInside(i: Int) {
         viewModelScope.launch {
-             _allSubjectsInside.postValue(ResourceList.loading(null))
+            _allSubjectsInformationInside.postValue(ResourceList.loading(null))
                 try {
-                    repository.getAllSubjectsOfAlloma(i).let {
+                    repository.getAllSubjectsInfo(i).let {
                         if (it.isSuccessful) {
-                            _allSubjectsInside.postValue(ResourceList.success(it.body()))
+                            _allSubjectsInformationInside.postValue(ResourceList.success(it.body()))
                             it.body()?.forEach {
-                                it.allomaId = i
                                 subjectList.add(it)
                             }
                         } else {
-                            _allSubjectsInside.postValue(
+                            _allSubjectsInformationInside.postValue(
                                 ResourceList.error(
                                     it.errorBody().toString(), null
                                 )
@@ -53,10 +53,9 @@ class Scholar2ViewModel @Inject constructor(
                         }
                     }
                 } catch (e: Exception) {
-                    Log.d("TAG", "getAllSubjects: Scholar 2")
+                    Log.d("TAG", "getAllSubjectInfo: Scholar 2")
                 }
-                _allSubjects.postValue(ResourceList.success(subjectList))
-
+            _allSubjectsInformation.postValue(ResourceList.success(subjectList))
         }
     }
 }

@@ -41,45 +41,26 @@ class DownloadingService : Service() {
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         CoroutineScope(Dispatchers.IO).launch {
-//            try {
-//                for (i in 1..200) {
-//                    Log.d(TAG, "running: $i")
-//                    delay(1000)
-//                }
-//            } catch (e: Exception) {
-//                Log.d(TAG, "onStartCommand: ${e.message}")
-//            }
-
+            Log.d(TAG, "onStartCommand: started image")
             readAllomasAndDownloadImages()
-        }.start()
+        }
 
         return START_STICKY
     }
 
-    private fun readAllomasAndDownloadImages() = CoroutineScope(Dispatchers.Default).launch {
+    private fun readAllomasAndDownloadImages() = CoroutineScope(Dispatchers.IO).launch {
         val allomas = repository.getAllAllomasFromRoom()
-        val fields = repository.getAllAllomaAndSubjectsFromRoom()
         allomas.forEach {
-          if (!checkAlloma(it)){
+          if (checkAlloma(it)){
               downloadImageFromPath(it.image_url, database)
           }
         }
 
-        fields.forEach {
-            if(!checkImage(it.image_url)){
-                downloadImageFromPath(it.image_url, database)
-            }
-        }
-    }
-
-    private suspend fun checkImage(imageUrl: String): Boolean {
-        return database.imageDao().getImageById(imageUrl) == null
     }
 
     private suspend fun checkAlloma(alloma: Alloma): Boolean {
         return database.imageDao().getImageById(alloma.image_url) == null
     }
-
 }
 
 
@@ -103,10 +84,9 @@ private fun downloadImageFromPath(path: String?, database: AppDatabase) =
                 val image = Image(path!!, bmp)
                 dao.insertImage(image)
 
-                Log.d("TAG", "downloadImageFromPath: saved image to database")
             }
         } catch (ex: Exception) {
-            Log.e("Exception", ex.toString())
+            Log.d(TAG, ex.toString())
         }
     }
 

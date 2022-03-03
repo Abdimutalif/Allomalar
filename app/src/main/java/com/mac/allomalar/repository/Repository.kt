@@ -21,6 +21,7 @@ class Repository @Inject constructor(
     private val scienceDao = appDatabase.scienceDao()
     private val madrasaAndYears = appDatabase.madrasaAndYearsDao()
     private val imageDao = appDatabase.imageDao()
+    private val subjectInfoDao = appDatabase.subjectInfoDao()
 
     //Read Room
     suspend fun getAllCenturiesFromRoom() = centuryDao.getAllCenturies()
@@ -55,15 +56,21 @@ class Repository @Inject constructor(
     suspend fun getAllBooksOfAllomaFromRoom(allomaId: Int) = bookDao.getAllBookOfAlloma(allomaId)
     suspend fun insertBooks(list: List<Book?>?) = bookDao.insertAllBooks(list)
 
-    suspend fun getAllScienceOfAllomaFromRoom(allomaId: Int) = scienceDao.getAllScienceOfAlloma(allomaId)
+    suspend fun getAllScienceOfAllomaFromRoom(allomaId: Int) =
+        scienceDao.getAllScienceOfAlloma(allomaId)
+
     suspend fun insertSciences(list: List<Science?>?) = scienceDao.insertAllScience(list)
 
-    suspend fun getAllMadrasaAndYearsOfAllomaFromRoom() = madrasaAndYears.getAllMadrasa()
-    suspend fun insertMadrasasAndYears(list: List<MadrasaAndYears?>?) = madrasaAndYears.insertAllMadrasaYears(list)
 
-    suspend fun getImagesListFromRoom() = imageDao.readImages()
     suspend fun getImageFromRoomById(imageId: String) = imageDao.getImageById(imageId)
     suspend fun insertImage(image: Image) = imageDao.insertImage(image)
+
+    suspend fun getAllSubjectInfoFromRoom(subjectId: Int) =
+        subjectInfoDao.getSubjects(subjectId)
+
+    suspend fun insertSubjectInfoAll(list: List<SubjectInfo?>?) =
+        subjectInfoDao.insertSubjectsAll(list)
+
 
     //ApiService
     suspend fun getEachAlloma(id: Int) = apiService.getAlloma(id)
@@ -73,4 +80,5 @@ class Repository @Inject constructor(
     suspend fun getAllSubjectsOfAlloma(allomaId: Int) = apiService.geAllSubjectsOfAlloma(allomaId)
     suspend fun getAllBooks() = apiService.getAllBooks()
     suspend fun getAllScience() = apiService.getScience()
+    suspend fun getAllSubjectsInfo(allomaId: Int) = apiService.getSubjectInfo(allomaId)
 }

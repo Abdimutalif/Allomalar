@@ -82,8 +82,8 @@
         <ProgressBar
             android:id="@+id/progressBarPlayer"
             style="?android:attr/progressBarStyle"
-            android:layout_width="225dp"
-            android:layout_height="485dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
