@@ -4,6 +4,7 @@ package com.mac.allomalar.ui.activities
 import android.content.Intent
 import android.os.Bundle
 import android.text.BoringLayout.make
+import android.widget.HorizontalScrollView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.snackbar.Snackbar.make
@@ -19,6 +20,9 @@ class MapActivity : AppCompatActivity() {
 
     @Inject
     lateinit var db: AppDatabase
+    val x=binding.horizontalScroll.getLeft()
+    val y = binding.horizontalScroll.getTop()
+    //binding.horizontalScroll.scrollTo(x,y)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
