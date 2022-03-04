@@ -35,7 +35,7 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
         android:maxLines="2"
-        android:text="Birinchi renessans davri madrasalari Buxoro misolida"
+        android:text="Birinchi renessans davri madrasalari "
         android:textAlignment="center"
         android:textAllCaps="true"
         android:textColor="@color/black_for_text"

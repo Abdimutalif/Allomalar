@@ -70,7 +70,7 @@ class Scholar_1Fragment : Fragment() {
                     binding.ivScholarImage.setImageBitmap(image)
                 }
             } catch (e: Exception) {
-                Log.d("TAG", "setBindings: zaybal qivardin")
+
             }
         }
     }

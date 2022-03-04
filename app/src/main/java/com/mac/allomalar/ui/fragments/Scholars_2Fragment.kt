@@ -148,9 +148,6 @@ class Scholars_2Fragment : Fragment(), NetworkStateChangeReceiver.ConnectivityRe
 
     private fun readSubjects() = uiScope.launch {
         list = viewModel.getAllSubjects(allomaId)
-//        if (list.isEmpty()){
-//            Toast.makeText(requireContext(), "Ma'lumot yo'q", Toast.LENGTH_SHORT).show()
-//        }
         setAdapter(list)
     }
 

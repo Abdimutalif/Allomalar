@@ -17,31 +17,41 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class ScholarsAdapter(val context: Context, var list: List<MadrasaAndAllomas>, var onItemScholarClick: OnItemScholarClick): RecyclerView.Adapter<ScholarsAdapter.ViewHolder>() {
+class ScholarsAdapter(
+    val context: Context,
+    var list: List<MadrasaAndAllomas>,
+    var onItemScholarClick: OnItemScholarClick
+) : RecyclerView.Adapter<ScholarsAdapter.ViewHolder>() {
 
     private var db: AppDatabase = AppDatabase.getInstance(context)
 
-    inner class ViewHolder(var view: View): RecyclerView.ViewHolder(view){
-        fun onBind(madrasaAndAllomas: MadrasaAndAllomas?, position: Int){
+    inner class ViewHolder(var view: View) : RecyclerView.ViewHolder(view) {
+        fun onBind(madrasaAndAllomas: MadrasaAndAllomas?, position: Int) {
             val card = view.findViewById<MaterialCardView>(R.id.card_batafsil)
             card.setOnClickListener {
                 onItemScholarClick.onClick(madrasaAndAllomas, position)
             }
 
-            val tv =  view.findViewById<TextView>(R.id.tv_scholar_name)
+            val tv = view.findViewById<TextView>(R.id.tv_scholar_name)
             tv.text = madrasaAndAllomas?.let {
                 it.name
             }
 
             CoroutineScope(Dispatchers.Main).launch {
                 val imageView = view.findViewById<ImageView>(R.id.iv_image_of_scholar)
-                imageView.setImageBitmap(db.imageDao().getImageById(madrasaAndAllomas?.image_url!!)?.image)
+                val image = db.imageDao().getImageById(madrasaAndAllomas?.image_url!!)?.image
+                if (image == null) {
+                    imageView.setImageResource(R.drawable.old_me)
+                } else {
+                    imageView.setImageBitmap(image)
+                }
             }
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        var view = LayoutInflater.from(parent.context).inflate(R.layout.item_scholar_in_madrasa, parent, false)
+        var view = LayoutInflater.from(parent.context)
+            .inflate(R.layout.item_scholar_in_madrasa, parent, false)
         return ViewHolder(view)
     }
 
@@ -49,9 +59,9 @@ class ScholarsAdapter(val context: Context, var list: List<MadrasaAndAllomas>, v
         holder.onBind(list[position], position)
     }
 
-    override fun getItemCount(): Int  = list.size
+    override fun getItemCount(): Int = list.size
 
-    interface OnItemScholarClick{
+    interface OnItemScholarClick {
         fun onClick(madrasaAndAllomas: MadrasaAndAllomas?, position: Int)
     }
 }

@@ -93,7 +93,6 @@ class ScientificWorksFragment : Fragment(),
                             job.join()
                             getBooksFromRoom()
                             isOnly = false
-//                            AllomalarActivity.isBooksAreWrittenToRoom = true
                             binding.progressScholar2.visibility = View.INVISIBLE
                         }
                     }

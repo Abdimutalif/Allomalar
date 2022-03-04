@@ -83,7 +83,6 @@ class FieldInformationFragment : Fragment(),
                     viewModel.getAllSubjectsInside(fieldId!!)
                     isOnce1 = false
                 } catch (e: Exception) {
-                    Toast.makeText(requireContext(), "Topdim", Toast.LENGTH_SHORT).show()
                 }
             }
             readAllSubjectInfo()

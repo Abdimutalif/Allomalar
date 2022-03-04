@@ -31,9 +31,8 @@ class HomeFragment : Fragment(), NetworkStateChangeReceiver.ConnectivityReceiver
 
     @Inject
     lateinit var networkHelper: NetworkHelper
-    private val TAG = "HomeFragment0"
+
     private var a = 0
-    private var isFirst = true
     private val _go = MutableLiveData<Int>()
     private val viewModel: HomeFragmentViewModel by viewModels()
     private lateinit var binding: FragmentHomeBinding

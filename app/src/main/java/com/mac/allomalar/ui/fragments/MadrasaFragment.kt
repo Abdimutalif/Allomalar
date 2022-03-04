@@ -77,7 +77,6 @@ class MadrasaFragment : Fragment(), NetworkStateChangeReceiver.ConnectivityRecei
     override fun onNetworkConnectionChanged(isConnected: Boolean) {
         if (isConnected && !AllomalarActivity.isAllMadrasasAndAllomaWrittenToRoom ) {
             binding.progressAllomas.visibility = View.VISIBLE
-            Toast.makeText(requireContext(), "Internet", Toast.LENGTH_SHORT).show()
             startToReadAllomas()
         }
     }
