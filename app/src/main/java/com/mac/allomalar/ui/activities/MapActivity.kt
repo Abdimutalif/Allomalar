@@ -23,11 +23,6 @@ import javax.inject.Inject
 class MapActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMapBinding
 
-//    @Inject
-//    lateinit var db: AppDatabase
-//    val x=binding.horizontalScroll.getLeft()
-//    val y = binding.horizontalScroll.getTop()
-//    //binding.horizontalScroll.scrollTo(x,y)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
